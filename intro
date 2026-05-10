@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Как писать контент на разных площадках — виды, форматы и требования</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF;
+    --bg-soft: #F5F6F7;
+    --bg-muted: #EDEEF0;
+    --ink: #1A1A1A;
+    --ink-2: #4A4D52;
+    --ink-3: #8A8E94;
+    --line: #E4E6E9;
+    --accent: #C4F542;
+    --accent-ink: #0F1A00;
+    --font-display: 'Unbounded', sans-serif;
+    --font-body: 'Manrope', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 999px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+  /* NAV */
+  .sticky-nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+  .sticky-nav::-webkit-scrollbar { display: none; }
+  .nav-inner { display: flex; white-space: nowrap; max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+  .nav-inner a { display: inline-flex; align-items: center; gap: 6px; padding: 14px 16px; font-size: 13px; font-weight: 600; color: var(--ink-3); text-decoration: none; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all .15s; }
+  .nav-inner a:hover { color: var(--ink); border-bottom-color: var(--accent); }
+  .nav-sep { display: inline-flex; align-items: center; padding: 0 4px; color: var(--line); font-size: 18px; }
+
+  /* WRAP */
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 64px 32px 120px; }
+
+  /* HERO */
+  .hero { margin-bottom: 56px; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; }
+  .hero h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 40px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 20px; }
+  .hero h1 em { font-style: normal; background: var(--accent); color: var(--accent-ink); padding: 2px 10px; border-radius: 8px; }
+  .hero-lead { font-size: 16px; color: var(--ink-2); max-width: 620px; line-height: 1.65; margin-bottom: 20px; }
+  .disclaimer { display: flex; gap: 10px; align-items: flex-start; background: var(--bg-soft); border-left: 3px solid var(--accent); border-radius: var(--radius-md); padding: 14px 18px; font-size: 13px; color: var(--ink-2); max-width: 640px; }
+
+  /* SCENARIO */
+  .scenario { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px 36px; margin-bottom: 56px; }
+  .scenario-eyebrow { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  .scenario h2 { font-family: var(--font-display); font-weight: 500; font-size: 20px; margin-bottom: 12px; line-height: 1.3; }
+  .scenario p { color: #CFD1D4; font-size: 14px; line-height: 1.65; }
+  .scenario-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .s-tag { background: rgba(196,245,66,.15); color: var(--accent); border: 1px solid rgba(196,245,66,.25); border-radius: var(--radius-pill); padding: 5px 12px; font-size: 12px; font-weight: 600; }
+
+  /* BLOCK SECTION */
+  .block-section { margin-bottom: 72px; padding-top: 36px; border-top: 2px solid var(--ink); scroll-margin-top: 56px; }
+  .block-section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+  .block-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .block-section h2 { font-family: var(--font-display); font-weight: 600; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .block-lesson-ref { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-pill); padding: 6px 14px; font-size: 12px; font-weight: 700; font-family: var(--font-mono); letter-spacing: 0.04em; margin-bottom: 24px; }
+  .block-intro { font-size: 15px; color: var(--ink-2); max-width: 680px; line-height: 1.65; margin-bottom: 32px; }
+
+  /* PLATFORM ROW */
+  .platform-block { margin-bottom: 32px; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+  .platform-head { display: flex; align-items: center; gap: 14px; padding: 20px 24px; background: var(--bg-soft); border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+  .p-emoji { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .p-name { font-family: var(--font-display); font-weight: 600; font-size: 17px; }
+  .p-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+  .p-badge { margin-left: auto; font-family: var(--font-mono); font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); letter-spacing: 0.04em; text-transform: uppercase; flex-shrink: 0; }
+  .badge-ok { background: #F0FAF4; color: #1A7A40; border: 1px solid #A0D4B0; }
+  .badge-warn { background: #FFF3F3; color: #C0392B; border: 1px solid #F5AAAA; }
+
+  /* SPECS */
+  .platform-body { padding: 24px; }
+  .specs { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .spec { background: var(--bg-soft); border-radius: var(--radius-sm); padding: 14px 16px; }
+  .spec-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 5px; }
+  .spec-val { font-weight: 700; font-size: 14px; }
+  .spec-note { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+
+  /* FORMATS */
+  .formats { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 20px; }
+  .fmt { display: inline-flex; align-items: center; gap: 5px; padding: 6px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 12px; font-weight: 600; }
+  .fmt .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--ink-3); }
+  .fmt.hot .dot { background: var(--accent); }
+
+  /* EXAMPLE */
+  .ex-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  .ex-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+  .ex-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .ex-card { background: var(--bg-soft); border-radius: var(--radius-md); padding: 16px; border: 1px solid var(--line); }
+  .ex-type { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .ex-inner { background: var(--bg); border-radius: var(--radius-sm); padding: 14px; border: 1px solid var(--line); }
+  .author-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 12px; font-weight: 700; }
+  .ava { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--accent-ink); font-weight: 700; flex-shrink: 0; }
+  .ex-text { font-size: 13px; line-height: 1.6; color: var(--ink); }
+  .ex-meta { font-family: var(--font-mono); font-size: 11px; color: var(--ink-3); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+
+  /* TIP */
+  .tip { background: var(--bg-soft); border-left: 3px solid var(--accent); border-radius: var(--radius-sm); padding: 14px 18px; font-size: 13.5px; color: var(--ink-2); }
+  .tip strong { color: var(--ink); }
+
+  /* KEY POINT */
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin: 24px 0; }
+  .kp-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 2px; }
+  .key-point p { margin: 0; font-weight: 500; font-size: 15px; }
+
+  /* CONCLUSION */
+  .conclusion { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 36px 40px; margin-top: 64px; }
+  .conclusion h2 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; line-height: 1.3; }
+  .conclusion p { color: #CFD1D4; font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
+  .conclusion p:last-child { margin-bottom: 0; }
+  .conclusion strong { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 40px 20px 80px; }
+    .nav-inner { padding: 0 20px; }
+    .scenario { padding: 24px 20px; }
+    .conclusion { padding: 28px 24px; }
+    .platform-head { gap: 10px; }
+    .p-badge { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a href="#text">✍️ Текст и фото</a>
+    <a href="#video">🎬 Видео</a>
+    <a href="#stories">📱 Сторис</a>
+    <a href="#audio">🎙️ Аудио и подкасты</a>
+    <a href="#first-post">📌 Первый пост и закреп</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <!-- INTRO -->
+  <div style="margin-bottom: 56px;">
+    <div class="eyebrow">Модуль 2 · Блогер с нуля · Вводный гайд</div>
+    <h1 style="font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 40px); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 24px;">Добро пожаловать<br>во второй модуль</h1>
+
+    <div style="max-width: 680px;">
+      <p style="font-size: 17px; font-weight: 500; color: var(--ink); line-height: 1.65; margin-bottom: 16px;">Здесь мы делаем первый контент. Не идеальный — настоящий.</p>
+
+      <p style="font-size: 15px; color: var(--ink-2); line-height: 1.7; margin-bottom: 16px;">Прежде чем перейти к урокам, важно понять одну вещь: контент можно создавать очень по-разному. Текст, видео, сторис, аудио — это разные форматы, у каждой платформы свои требования и ограничения. Поначалу это кажется сложным. Но на самом деле всё гораздо проще.</p>
+
+      <p style="font-size: 15px; color: var(--ink-2); line-height: 1.7; margin-bottom: 16px;">Когда вы понимаете как строится текст, как снимается видео, как рассказывается история которая удерживает внимание — вы сможете адаптировать это под любую платформу. Это как знать правила игры: площадка может быть разной, а принципы работают везде.</p>
+
+      <p style="font-size: 15px; color: var(--ink-2); line-height: 1.7; margin-bottom: 28px;">Этот гайд — ваша карта перед стартом. Здесь собраны форматы, ограничения и примеры по каждой платформе. Возвращайтесь к нему когда нужно — он будет полезен не только сейчас, но и через несколько месяцев когда будете осваивать новые площадки. А дальше — уроки, где разберём каждый формат подробно и сразу попрактикуемся.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-bottom: 28px;">
+        <div style="background: var(--bg-soft); border-radius: var(--radius-md); padding: 16px 18px; border-left: 3px solid var(--accent);">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;">Урок 2.1</div>
+          <div style="font-weight: 700; font-size: 14px;">Первый пост</div>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px;">Закреп и 20 публикаций</div>
+        </div>
+        <div style="background: var(--bg-soft); border-radius: var(--radius-md); padding: 16px 18px; border-left: 3px solid var(--accent);">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;">Урок 2.2</div>
+          <div style="font-weight: 700; font-size: 14px;">Как писать посты</div>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px;">4 типа и формулы</div>
+        </div>
+        <div style="background: var(--bg-soft); border-radius: var(--radius-md); padding: 16px 18px; border-left: 3px solid var(--accent);">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;">Урок 2.3</div>
+          <div style="font-weight: 700; font-size: 14px;">Фото без студии</div>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px;">Свет, сетка, визуал</div>
+        </div>
+        <div style="background: var(--bg-soft); border-radius: var(--radius-md); padding: 16px 18px; border-left: 3px solid var(--accent);">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;">Урок 2.4</div>
+          <div style="font-weight: 700; font-size: 14px;">Практикум видео</div>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px;">Первый рилс в CapCut</div>
+        </div>
+        <div style="background: var(--bg-soft); border-radius: var(--radius-md); padding: 16px 18px; border-left: 3px solid var(--accent);">
+          <div style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px;">Урок 2.5</div>
+          <div style="font-weight: 700; font-size: 14px;">Истории</div>
+          <div style="font-size: 12px; color: var(--ink-3); margin-top: 3px;">10 принципов сторис</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO / GUIDE TITLE -->
+  <div class="hero">
+    <div class="eyebrow">Бонусный гайд · Модуль 2 · Блогер с нуля</div>
+    <h1>Как писать контент на разных площадках:<br><em>виды, форматы и требования</em></h1>
+    <p class="hero-lead">Один и тот же смысл живёт по-разному на каждой платформе. Здесь — конкретные примеры, актуальные ограничения и особенности каждой соцсети. Чтобы вы не переписывали контент с нуля, а умело его адаптировали.</p>
+    <div class="disclaimer">
+      <span>⚠️</span>
+      <span>Алгоритмы и ограничения платформ меняются. Данные актуальны на начало 2026 года. Всегда проверяйте официальную справку платформы перед важными решениями.</span>
+    </div>
+  </div>
+
+  <!-- SCENARIO -->
+  <div class="scenario">
+    <div class="scenario-eyebrow">Наш пример на весь гайд</div>
+    <h2>Блогер: мама, которая начала заниматься спортом после родов</h2>
+    <p>Тема блога — спорт и движение в жизни занятой мамы. Не марафоны и строгие диеты, а честно о том как найти 20 минут на себя. В каждом разделе покажем как один и тот же смысл выглядит на разных платформах — объём другой, тон другой, формат другой, а суть одна.</p>
+    <div class="scenario-tags">
+      <span class="s-tag">Ниша: спорт и материнство</span>
+      <span class="s-tag">Аудитория: мамы 25–40</span>
+      <span class="s-tag">Тон: честный, без глянца</span>
+    </div>
+  </div>
+
+  <!-- ===== БЛОК 1: ТЕКСТ И ФОТО ===== -->
+  <div class="block-section" id="text">
+    <div class="eyebrow">Блок 01</div>
+    <h2>Текст и фото</h2>
+    <div class="block-lesson-ref">→ Урок 2.2: Как писать посты: 4 типа и формулы</div>
+    <p class="block-intro">В уроке 2.2 вы разобрали четыре типа постов и структуру каждого. Здесь смотрим как эти же принципы работают на разных платформах — где можно писать длинно, где нужно быть коротким, и что показывается в ленте без клика.</p>
+
+    <!-- ВКонтакте -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#E8F0FE;">🔵</div>
+        <div><div class="p-name">ВКонтакте</div><div class="p-sub">Публичная страница · Текст + фото + статьи</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Текст поста</div><div class="spec-val">до 16 384 зн.</div><div class="spec-note">Показывает ~250 зн., затем «показать полностью»</div></div>
+          <div class="spec"><div class="spec-label">Фото в посте</div><div class="spec-val">до 10 фото</div><div class="spec-note">Рекомендуемый размер 1080×1080 px</div></div>
+          <div class="spec"><div class="spec-label">Статья</div><div class="spec-val">без лимита</div><div class="spec-note">Отдельный редактор, длинный формат</div></div>
+          <div class="spec"><div class="spec-label">Хэштеги</div><div class="spec-val">до 10 шт.</div><div class="spec-note">Больше — риск ограничения показа</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Короткий пост</span>
+          <span class="fmt hot"><span class="dot"></span> Длинный пост</span>
+          <span class="fmt hot"><span class="dot"></span> Статья</span>
+          <span class="fmt"><span class="dot"></span> Пост с фото/галерея</span>
+          <span class="fmt"><span class="dot"></span> Опрос</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Короткий пост (~250 зн.)</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+              <div class="ex-text">Сегодня встала в 5:30 — пока все спали.<br><br>Не потому что люблю рано вставать. А потому что это единственные 20 минут в день которые точно мои.<br><br>А вы как находите время на себя?</div>
+              <div class="ex-meta">Виден полностью без клика · вопрос в конце = комментарии</div>
+            </div>
+          </div>
+          <div class="ex-card">
+            <div class="ex-type">Статья (длинный формат)</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+              <div class="ex-text"><strong>Как я вернулась к спорту после родов: честно и без марафонов</strong><br><br>Первые полгода я вообще не думала о спорте. Потом начала себя ругать. Потом поняла что ругань не работает — и придумала систему.<br><br>Рассказываю по шагам...</div>
+              <div class="ex-meta">Заголовок + вводный абзац · вся статья открывается отдельно</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка ВКонтакте:</strong> алгоритм хорошо продвигает посты с вопросом в конце — комментарии сильно влияют на охват. Первые 250 символов решают откроют ли пост дальше.</div>
+      </div>
+    </div>
+
+    <!-- Telegram -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#E8F4FF;">✈️</div>
+        <div><div class="p-name">Telegram</div><div class="p-sub">Канал · Текст виден полностью — без кнопки «читать далее»</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Текст поста</div><div class="spec-val">до 4 096 зн.</div><div class="spec-note">Показывает весь текст без кнопки «далее»</div></div>
+          <div class="spec"><div class="spec-label">Фото + текст</div><div class="spec-val">до 1 024 зн.</div><div class="spec-note">Если добавить фото — лимит текста меньше</div></div>
+          <div class="spec"><div class="spec-label">Медиа в посте</div><div class="spec-val">до 10 файлов</div><div class="spec-note">Фото, видео или документы</div></div>
+          <div class="spec"><div class="spec-label">Telegraph</div><div class="spec-val">без лимита</div><div class="spec-note">Для лонгридов — публикуется как ссылка</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Текстовый пост</span>
+          <span class="fmt hot"><span class="dot"></span> Пост с фото</span>
+          <span class="fmt"><span class="dot"></span> Лонгрид через Telegraph</span>
+          <span class="fmt"><span class="dot"></span> Опрос</span>
+          <span class="fmt"><span class="dot"></span> Голосовое</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Пост в канале</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+              <div class="ex-text">Встала в 5:30. Пока все спали.<br><br>Не потому что люблю рано вставать — а потому что это единственные 20 минут в день, которые точно мои.<br><br>Йога на коврике. Ребёнок сопит в соседней комнате. Первый месяц тяжело, второй стало привычкой.<br><br>А вы как находите время на себя? 👇</div>
+              <div class="ex-meta">Весь текст виден без клика · комментарии подключаются отдельно</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка Telegram:</strong> здесь читают внимательно — аудитория осознанно подписалась. Можно писать глубже и длиннее чем в других соцсетях. Комментарии нужно подключать через отдельную группу-обсуждение.</div>
+      </div>
+    </div>
+
+    <!-- MAX -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#FFF0E8;">🟠</div>
+        <div><div class="p-name">MAX</div><div class="p-sub">Бизнес-канал · Монетизация от 1000 подписчиков</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Текст поста</div><div class="spec-val">до 4 096 зн.</div><div class="spec-note">Показывает ~300 зн., затем «читать далее»</div></div>
+          <div class="spec"><div class="spec-label">Фото</div><div class="spec-val">до 10 фото</div><div class="spec-note">Рекомендуемый размер 1080×1080 px</div></div>
+          <div class="spec"><div class="spec-label">Продвижение</div><div class="spec-val">от ~20 постов</div><div class="spec-note">Алгоритм начинает активно продвигать после 20 материалов</div></div>
+          <div class="spec"><div class="spec-label">Комментарии</div><div class="spec-val">не встроены</div><div class="spec-note">Подключаются отдельно</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Текстовый пост</span>
+          <span class="fmt hot"><span class="dot"></span> Пост с фото</span>
+          <span class="fmt"><span class="dot"></span> Опрос</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Пост в канале</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+              <div class="ex-text">5:30 утра. Все спят.<br><br>Это мои 20 минут — единственные в день которые точно мои.<br><br>Не марафон. Не зал. Просто коврик и тишина пока ребёнок ещё не проснулся.<br><br>Расскажите — вы вообще находите время на себя?</div>
+              <div class="ex-meta">~300 зн. видны без клика · регулярность = ключ к продвижению</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка MAX:</strong> платформа платит авторам с 1000 подписчиков. Первые 20 постов — входной билет в рекомендации. Публикуйте стабильно, даже если охваты пока маленькие.</div>
+      </div>
+    </div>
+
+    <!-- Дзен -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F0F0FF;">🔮</div>
+        <div><div class="p-name">Дзен</div><div class="p-sub">Статьи и посты · Поисковый трафик · Аудитория 74 млн/мес</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Статья</div><div class="spec-val">до 100 000 зн.</div><div class="spec-note">Оптимально: 3000–6000 зн. (3–5 мин чтения)</div></div>
+          <div class="spec"><div class="spec-label">Пост</div><div class="spec-val">до 4 096 зн.</div><div class="spec-note">Короткий формат, виден подписчикам</div></div>
+          <div class="spec"><div class="spec-label">Заголовок</div><div class="spec-val">до 128 зн.</div><div class="spec-note">Рекомендовано 15–25 зн., без кликбейта</div></div>
+          <div class="spec"><div class="spec-label">Обложка</div><div class="spec-val">горизонтальная</div><div class="spec-note">Без текста на обложке — алгоритм не любит</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Статья</span>
+          <span class="fmt"><span class="dot"></span> Пост</span>
+          <span class="fmt"><span class="dot"></span> Нарратив (карточки)</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Статья</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | Спорт для мам</div>
+              <div class="ex-text"><strong>Как найти время на спорт молодой маме: мой опыт без зала и марафонов</strong><br><br>Год назад я думала что мамы не могут нормально заниматься спортом. Сейчас занимаюсь каждое утро по 20 минут.<br><br>→ Почему марафоны не работают для мам<br>→ Система 20 минут: как устроена<br>→ Что изменилось за год</div>
+              <div class="ex-meta">SEO-заголовок · структура обязательна · ИИ-текст режется алгоритмом</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка Дзена:</strong> алгоритм работает как поисковик. Люди приходят с конкретным запросом — «спорт после родов», «как похудеть маме». Заголовок должен отвечать на реальный вопрос который человек мог бы вбить в поиск. Пишите своим голосом — ИИ-контент платформа режет.</div>
+      </div>
+    </div>
+
+    <!-- TikTok текст -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F0F0F0;">🎵</div>
+        <div><div class="p-name">TikTok</div><div class="p-sub">Подпись к видео · Фото-карусель</div></div>
+        <span class="p-badge badge-ok">Работает в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Подпись к видео</div><div class="spec-val">до 2 200 зн.</div><div class="spec-note">В ленте видны первые ~100 зн.</div></div>
+          <div class="spec"><div class="spec-label">Фото-карусель</div><div class="spec-val">до 35 слайдов</div><div class="spec-note">Хорошо работает для текстового контента</div></div>
+          <div class="spec"><div class="spec-label">Хэштеги</div><div class="spec-val">3–5 шт.</div><div class="spec-note">Точные по теме, не 20 случайных</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Фото-карусель</span>
+          <span class="fmt"><span class="dot"></span> Подпись к видео</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Фото-карусель</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>@masha.sport.mama</div>
+              <div class="ex-text"><strong>Слайд 1:</strong> «Как найти 20 минут на спорт когда ты мама»<br><br><strong>Слайд 2:</strong> Да, вставать в 5:30 тяжело<br><strong>Слайд 3:</strong> Но это единственное время которое точно моё<br><strong>Слайд 4:</strong> Месяц — усилие. Два — привычка<br><strong>Слайд 5:</strong> А вы пробовали?</div>
+              <div class="ex-meta">5–7 слайдов · каждый = одна мысль</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка TikTok:</strong> TikTok — это прежде всего видео. Текстовая карусель работает, но как дополнение. Подробнее о видео-форматах — в Блоке 2.</div>
+      </div>
+    </div>
+
+    <!-- Instagram текст -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#FFF0F5;">📸</div>
+        <div><div class="p-name">Instagram*</div><div class="p-sub">Карусель · Пост · Подпись к рилсу</div></div>
+        <span class="p-badge badge-warn">Ограничен в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Подпись к посту</div><div class="spec-val">до 2 200 зн.</div><div class="spec-note">В ленте видны первые ~125 зн., затем «ещё»</div></div>
+          <div class="spec"><div class="spec-label">Карусель</div><div class="spec-val">до 20 слайдов</div><div class="spec-note">Алгоритм показывает повторно тем кто не долистал</div></div>
+          <div class="spec"><div class="spec-label">Хэштеги</div><div class="spec-val">3–10 шт.</div><div class="spec-note">Точные по теме работают лучше массовых</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Карусель</span>
+          <span class="fmt hot"><span class="dot"></span> Пост с фото</span>
+          <span class="fmt"><span class="dot"></span> Подпись к рилсу</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Карусель</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>masha.sport.mama</div>
+              <div class="ex-text"><strong>Обложка:</strong> «Как я нашла время на спорт с маленьким ребёнком»<br><br>2 — Раньше думала: некогда<br>3 — Потом поняла: 20 минут есть у всех<br>4 — Просто надо встать раньше<br>5 — Первый месяц тяжело<br>6 — Второй — привычка<br>7 — Попробуйте?</div>
+              <div class="ex-meta">Обложка = крючок · алгоритм показывает дважды</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка Instagram:</strong> карусели алгоритм показывает дважды — сначала тем кто не долистал, потом снова. Один из самых выгодных форматов по охвату. Обложка первого слайда решает откроют или нет.</div>
+      </div>
+    </div>
+
+    <!-- Threads текст -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F5F0FF;">🧵</div>
+        <div><div class="p-name">Threads*</div><div class="p-sub">Микроблог от Meta · Короткие мысли и обсуждения</div></div>
+        <span class="p-badge badge-warn">Ограничен в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Текст поста</div><div class="spec-val">до 500 зн.</div><div class="spec-note">Короткий формат — ближе к микроблогу</div></div>
+          <div class="spec"><div class="spec-label">Тред</div><div class="spec-val">цепочка постов</div><div class="spec-note">Длинную мысль разбивают на несколько постов</div></div>
+          <div class="spec"><div class="spec-label">Фото</div><div class="spec-val">до 10 фото</div><div class="spec-note">Или видео до 5 минут</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Короткий пост</span>
+          <span class="fmt hot"><span class="dot"></span> Тред (цепочка)</span>
+          <span class="fmt"><span class="dot"></span> Пост с фото</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Тред 4 поста</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>masha.sport.mama</div>
+              <div class="ex-text"><strong>1/4</strong> Год назад думала что мамы не могут заниматься спортом. Сейчас — каждый день.<br><br><strong>2/4</strong> Секрет скучный: встаю на 20 минут раньше ребёнка.<br><br><strong>3/4</strong> Первый месяц — боль. Второй — привычка.<br><br><strong>4/4</strong> Нет идеального момента. Есть коврик и будильник.</div>
+              <div class="ex-meta">Каждый пост = одна мысль · вопрос в конце = обсуждение</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка Threads:</strong> платформа заточена под обсуждения. Вопрос в конце поста здесь работает лучше чем где-либо. Тред позволяет раскрыть тему глубже не нарушая лимит.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== БЛОК 2: ВИДЕО ===== -->
+  <div class="block-section" id="video">
+    <div class="eyebrow">Блок 02</div>
+    <h2>Видео</h2>
+    <div class="block-lesson-ref">→ Уроки 2.3 и 2.4: Съёмка фото и практикум по видео</div>
+    <p class="block-intro">В уроках 2.3 и 2.4 вы разобрали технику съёмки и принципы монтажа. Здесь смотрим как те же принципы работают на разных платформах — где нужен рилс, где shorts, где горизонталь, и какая длина работает лучше всего.</p>
+
+    <div class="key-point">
+      <div class="kp-label">Главное</div>
+      <p>Принцип один для всех платформ: крючок в первые 1–3 секунды, суть без воды, вопрос в конце. Меняется только длина и технические требования.</p>
+    </div>
+
+    <!-- ВК Клипы -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#E8F0FE;">🔵</div>
+        <div><div class="p-name">ВКонтакте — Клипы</div><div class="p-sub">Вертикальное видео · Отдельная лента рекомендаций</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Длина</div><div class="spec-val">до 60 мин</div><div class="spec-note">Оптимально: 15–60 секунд</div></div>
+          <div class="spec"><div class="spec-label">Формат</div><div class="spec-val">вертикальный</div><div class="spec-note">9:16, 1080×1920 px</div></div>
+          <div class="spec"><div class="spec-label">Размер файла</div><div class="spec-val">до 5 ГБ</div></div>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Клип 30–45 сек</div>
+            <div class="ex-inner">
+              <div class="ex-text"><em>Видео: будильник 5:30, коврик у окна, рассвет</em><br><br><strong>Текст в кадре:</strong> «Мои 20 минут пока все спят»<br><br><strong>Подпись:</strong> Не зал и не марафон. Просто коврик и ранний подъём 🧘‍♀️</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>ВКонтакте:</strong> клипы живут в отдельной ленте — алгоритм хорошо продвигает новых авторов. Оптимально 30–60 секунд, крючок в первую секунду.</div>
+      </div>
+    </div>
+
+    <!-- MAX видео -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#FFF0E8;">🟠</div>
+        <div><div class="p-name">MAX — Видео</div><div class="p-sub">Вертикальное и горизонтальное · Монетизация от просмотров</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Длина</div><div class="spec-val">любая</div><div class="spec-note">Оптимально для коротких: до 60 сек</div></div>
+          <div class="spec"><div class="spec-label">Формат</div><div class="spec-val">вертикальный / горизонтальный</div></div>
+          <div class="spec"><div class="spec-label">Размер файла</div><div class="spec-val">до 4 ГБ</div></div>
+        </div>
+        <div class="tip"><strong>MAX:</strong> видео хорошо продвигается алгоритмом, особенно после 20 публикаций. Монетизация — с 1000 подписчиков от суммарных просмотров.</div>
+      </div>
+    </div>
+
+    <!-- TikTok видео -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F0F0F0;">🎵</div>
+        <div><div class="p-name">TikTok — Видео</div><div class="p-sub">Вертикальное видео · Самый высокий вирусный потенциал</div></div>
+        <span class="p-badge badge-ok">Работает в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Длина</div><div class="spec-val">15 сек — 10 мин</div><div class="spec-note">Оптимально: 30–60 секунд</div></div>
+          <div class="spec"><div class="spec-label">Формат</div><div class="spec-val">вертикальный</div><div class="spec-note">9:16, 1080×1920 px</div></div>
+          <div class="spec"><div class="spec-label">Размер</div><div class="spec-val">до 287 МБ (iOS)</div><div class="spec-note">До 72 МБ на Android</div></div>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Видео 30–45 сек</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>@masha.sport.mama</div>
+              <div class="ex-text"><em>Видео: будильник, коврик, рассвет за окном</em><br><br><strong>Крючок на экране:</strong> «Как мама находит время на спорт 🤱»<br><br><strong>Подпись:</strong> 20 минут пока все спят. Без зала. Просто коврик 🧘‍♀️ #спортдлямам</div>
+              <div class="ex-meta">Первая секунда — крючок · 3–5 точных хэштега</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>TikTok:</strong> первая секунда решает всё — палец уже движется к пролистыванию. Крючок должен быть в кадре сразу. Хэштеги помогают алгоритму понять тему.</div>
+      </div>
+    </div>
+
+    <!-- Instagram Reels -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#FFF0F5;">📸</div>
+        <div><div class="p-name">Instagram* — Reels</div><div class="p-sub">Вертикальное видео · Рекомендации новой аудитории</div></div>
+        <span class="p-badge badge-warn">Ограничен в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Длина Reels</div><div class="spec-val">до 3 мин</div><div class="spec-note">Алгоритм не продвигает рилсы длиннее 3 мин новой аудитории</div></div>
+          <div class="spec"><div class="spec-label">Формат</div><div class="spec-val">вертикальный</div><div class="spec-note">9:16, 1080×1920 px</div></div>
+          <div class="spec"><div class="spec-label">Размер</div><div class="spec-val">до 650 МБ</div></div>
+          <div class="spec"><div class="spec-label">Оптимально</div><div class="spec-val">15–60 сек</div><div class="spec-note">Короткие рилсы алгоритм продвигает активнее</div></div>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Reel 30–45 сек</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>masha.sport.mama</div>
+              <div class="ex-text"><em>Видео: утро, коврик, рассвет</em><br><br><strong>Текст в кадре:</strong> «POV: нашла 20 минут до того как проснётся ребёнок»<br><br><strong>Подпись:</strong> Не зал. Не марафон. Просто коврик ✨ А вы как?</div>
+              <div class="ex-meta">Текст в кадре важнее голоса · первая секунда = крючок</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Instagram Reels:</strong> алгоритм не рекомендует рилсы длиннее 3 минут новой аудитории. Для охвата делайте короче. Текст в кадре увеличивает досмотры — многие смотрят без звука.</div>
+      </div>
+    </div>
+
+    <!-- YouTube -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#FFF0F0;">▶️</div>
+        <div><div class="p-name">YouTube — Shorts и длинное видео</div><div class="p-sub">65 млн пользователей в России · Два разных формата</div></div>
+        <span class="p-badge badge-warn">Замедлен в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Shorts</div><div class="spec-val">до 3 мин</div><div class="spec-note">Вертикальный, отдельная лента рекомендаций</div></div>
+          <div class="spec"><div class="spec-label">Длинное видео</div><div class="spec-val">до 12 часов</div><div class="spec-note">Горизонтальный, после верификации аккаунта</div></div>
+          <div class="spec"><div class="spec-label">Превью</div><div class="spec-val">1280×720 px</div><div class="spec-note">Решает кликнут или нет — важнее названия</div></div>
+          <div class="spec"><div class="spec-label">Описание</div><div class="spec-val">до 5 000 зн.</div><div class="spec-note">Влияет на поиск — важны ключевые слова</div></div>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Short до 60 сек</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | Спорт для мам</div>
+              <div class="ex-text"><em>Видео: будильник, коврик, рассвет</em><br><br><strong>Название:</strong> Мои 20 минут пока не проснулись дети 🌅<br><br><strong>Крючок в кадре:</strong> «Как мама 2 детей находит время на спорт»</div>
+              <div class="ex-meta">Short до 60 сек · название + превью = клик</div>
+            </div>
+          </div>
+          <div class="ex-card">
+            <div class="ex-type">Длинное видео 10–15 мин</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | Спорт для мам</div>
+              <div class="ex-text"><strong>Название:</strong> Как я вернулась к спорту после родов | Честно о том что работает<br><br>0:00 Вступление<br>1:30 Почему марафоны не работают<br>4:00 Моя система на 20 минут<br>8:00 Что изменилось за год</div>
+              <div class="ex-meta">Таймкоды обязательны · превью и название важнее контента</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>YouTube:</strong> превью и название — это то что видит человек до клика. Вложите 20% усилий в контент и 80% в название и превью — это не преувеличение. Таймкоды в описании повышают досмотры.</div>
+      </div>
+    </div>
+
+    <!-- Дзен видео -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F0F0FF;">🔮</div>
+        <div><div class="p-name">Дзен — Видео и ролики</div><div class="p-sub">Горизонтальное видео · Короткие ролики</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Длинное видео</div><div class="spec-val">до 15 мин</div><div class="spec-note">Горизонтальный формат</div></div>
+          <div class="spec"><div class="spec-label">Ролик (shorts)</div><div class="spec-val">вертикальный</div><div class="spec-note">Короткий формат как TikTok</div></div>
+          <div class="spec"><div class="spec-label">Размер файла</div><div class="spec-val">до 10 ГБ</div></div>
+        </div>
+        <div class="tip"><strong>Дзен:</strong> видео хорошо работает для обзоров, экспертного контента и личного блога. Горизонтальный формат предпочтительнее. Алгоритм смотрит на процент досмотров.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== БЛОК 3: СТОРИС ===== -->
+  <div class="block-section" id="stories">
+    <div class="eyebrow">Блок 03</div>
+    <h2>Сторис</h2>
+    <div class="block-lesson-ref">→ Урок 2.5: Истории как часть контента</div>
+    <p class="block-intro">В уроке 2.5 вы узнали что сторис — это главный канал общения с тёплой аудиторией. Сторис есть не только в Instagram — они работают во ВКонтакте, Telegram и WhatsApp. Вот как они устроены на каждой платформе.</p>
+
+    <div class="key-point">
+      <div class="kp-label">Главное</div>
+      <p>Сторис — для тех кто уже на вас подписан. Посты и рилсы привлекают новых. Сторис удерживают тёплых. Именно из сторис приходят первые покупатели.</p>
+    </div>
+
+    <!-- Таблица сторис -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F5F5F5;">📱</div>
+        <div><div class="p-name">Сторис на разных платформах</div><div class="p-sub">Сравнение форматов и ограничений</div></div>
+      </div>
+      <div class="platform-body">
+        <div style="overflow-x: auto;">
+          <table style="width:100%; border-collapse: collapse; font-size: 14px;">
+            <thead>
+              <tr style="background: var(--bg-soft);">
+                <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Платформа</th>
+                <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Длина</th>
+                <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Время жизни</th>
+                <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Особенности</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">ВКонтакте</td>
+                <td style="padding: 12px 16px;">до 60 сек</td>
+                <td style="padding: 12px 16px;">24 часа</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Можно закрепить в «Актуальном», интерактивные элементы</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">Telegram</td>
+                <td style="padding: 12px 16px;">до 60 сек</td>
+                <td style="padding: 12px 16px;">6/12/24/48 ч</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Только для Premium. Без реакций. Подпись до 200 зн.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">Instagram*</td>
+                <td style="padding: 12px 16px;">до 60 сек</td>
+                <td style="padding: 12px 16px;">24 часа</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Богатые интерактивы: опросы, вопросы, реакции, ссылки. Можно сохранить в «Актуальное»</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">TikTok</td>
+                <td style="padding: 12px 16px;">до 60 сек</td>
+                <td style="padding: 12px 16px;">24 часа</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Фото или видео, интерактивные элементы</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 16px; font-weight: 700;">WhatsApp</td>
+                <td style="padding: 12px 16px;">до 30 сек (видео)</td>
+                <td style="padding: 12px 16px;">24 часа</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Только для личных контактов — закрытая аудитория</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top: 20px;">
+          <div class="ex-label">Пример сторис</div>
+          <div class="ex-cards">
+            <div class="ex-card">
+              <div class="ex-type">Утренняя сторис</div>
+              <div class="ex-inner">
+                <div class="author-row"><div class="ava">М</div>Маша</div>
+                <div class="ex-text">📍 5:32 утра<br><br><em>[фото: коврик у окна, рассвет]</em><br><br>Мои 20 минут до того как всё началось 🌅<br><br><strong>[Опрос:]</strong> Вы рано встаёте? 🌙 Сова / 🌅 Жаворонок</div>
+                <div class="ex-meta">Фото + контекст + интерактив = вовлечение</div>
+              </div>
+            </div>
+            <div class="ex-card">
+              <div class="ex-type">Первая сторис за день</div>
+              <div class="ex-inner">
+                <div class="author-row"><div class="ava">М</div>Маша</div>
+                <div class="ex-text"><strong>Важно:</strong> первая сторис за день — самая важная.<br><br>Если её закрыли — остальные алгоритм может не показать вовсе.<br><br>Начинайте с вовлекающего: вопрос, интрига, необычное фото.</div>
+                <div class="ex-meta">Из урока 2.5: принцип №3</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== БЛОК 4: АУДИО И ПОДКАСТЫ ===== -->
+  <div class="block-section" id="audio">
+    <div class="eyebrow">Блок 04</div>
+    <h2>Аудио и подкасты</h2>
+    <div class="block-lesson-ref">→ Бонусный формат · Дополняет любой урок модуля</div>
+    <p class="block-intro">Аудио — это недооценённый формат. Люди слушают на ходу, в машине, во время готовки. Не нужно быть в кадре, не нужен монтаж. Просто голос и мысль. На некоторых платформах это работает даже лучше видео.</p>
+
+    <div class="key-point">
+      <div class="kp-label">Главное</div>
+      <p>Голосовое в Telegram или подкаст во ВКонтакте — это тот же контент что вы уже умеете делать. Только без камеры. Попробуйте записать аудио-версию одного из ваших постов и посмотрите на отклик.</p>
+    </div>
+
+    <!-- Telegram аудио -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#E8F4FF;">✈️</div>
+        <div><div class="p-name">Telegram — Голосовые и кружки</div><div class="p-sub">Мини-подкаст прямо в канале · Слушают на ходу</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Голосовое</div><div class="spec-val">до 2 ГБ</div><div class="spec-note">Любая длина, воспроизводится прямо в канале</div></div>
+          <div class="spec"><div class="spec-label">Кружок (видео)</div><div class="spec-val">до 60 сек</div><div class="spec-note">Круглое видео — лицо говорит, воспринимается как личное</div></div>
+          <div class="spec"><div class="spec-label">Формат</div><div class="spec-val">MP3, OGG, M4A</div><div class="spec-note">Можно загрузить готовый файл или записать в приложении</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Голосовое сообщение</span>
+          <span class="fmt hot"><span class="dot"></span> Кружок (видеокружок)</span>
+          <span class="fmt"><span class="dot"></span> Аудиофайл как документ</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Голосовое 3–5 мин</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+              <div class="ex-text"><strong>Пост перед голосовым:</strong><br>«Записала голосовое — 4 минуты честно о том почему бросала спорт трижды и что наконец сработало. Слушайте если сейчас тоже хочется всё бросить 👇»<br><br><em>[голосовое сообщение]</em></div>
+              <div class="ex-meta">Подводка текстом + голосовое = высокое вовлечение</div>
+            </div>
+          </div>
+          <div class="ex-card">
+            <div class="ex-type">Кружок</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+              <div class="ex-text"><em>[круглое видео: лицо, говорит без монтажа]</em><br><br>«Доброе утро. Сегодня 5:30 — коврик — и мысль которую хочу с вами поделиться...»<br><br>До 60 секунд, без подготовки, ощущение личного разговора.</div>
+              <div class="ex-meta">Кружок воспринимается как личное сообщение · высокое доверие</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>Фишка Telegram:</strong> голосовые слушают охотнее чем читают длинные тексты. Особенно работает формат «мысль дня» на 2–3 минуты. Не нужно монтировать — просто говорите.</div>
+      </div>
+    </div>
+
+    <!-- ВКонтакте подкасты -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#E8F0FE;">🔵</div>
+        <div><div class="p-name">ВКонтакте — Подкасты и аудио</div><div class="p-sub">Отдельный раздел подкастов · Аудиофайлы в постах</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Подкасты</div><div class="spec-val">отдельный раздел</div><div class="spec-note">Создаётся как отдельное шоу с эпизодами</div></div>
+          <div class="spec"><div class="spec-label">Аудио в посте</div><div class="spec-val">MP3</div><div class="spec-note">Можно прикрепить аудиофайл к обычному посту</div></div>
+          <div class="spec"><div class="spec-label">Длина эпизода</div><div class="spec-val">любая</div><div class="spec-note">Ограничений по длине нет</div></div>
+        </div>
+        <div class="formats">
+          <span class="fmt hot"><span class="dot"></span> Подкаст-эпизод</span>
+          <span class="fmt"><span class="dot"></span> Аудио в посте</span>
+          <span class="fmt"><span class="dot"></span> Голосовое сообщение</span>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Подкаст-эпизод</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+              <div class="ex-text"><strong>Название эпизода:</strong> «Почему марафоны не работают — и что работает вместо них»<br><br><strong>Описание:</strong> 12 минут честного разговора о том как найти 20 минут на себя когда ты мама.<br><br><em>[аудиофайл]</em></div>
+              <div class="ex-meta">Подкаст во ВКонтакте — отдельное шоу с обложкой и описанием</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>ВКонтакте:</strong> подкасты живут в отдельном разделе и индексируются поиском — это дополнительный органический охват. Можно начать с простого: записать разговор по теме блога и загрузить как эпизод.</div>
+      </div>
+    </div>
+
+    <!-- YouTube аудио -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#FFF0F0;">▶️</div>
+        <div><div class="p-name">YouTube — Аудио-формат</div><div class="p-sub">Видео со статичной картинкой · Популярный приём блогеров</div></div>
+        <span class="p-badge badge-warn">Замедлен в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="specs">
+          <div class="spec"><div class="spec-label">Формат</div><div class="spec-val">Видео + картинка</div><div class="spec-note">Загружается как обычное видео, но в кадре статичное фото или обложка</div></div>
+          <div class="spec"><div class="spec-label">Длина</div><div class="spec-val">любая</div><div class="spec-note">Подкасты на YouTube часто длиннее часа</div></div>
+        </div>
+        <div class="ex-label">Пример</div>
+        <div class="ex-cards">
+          <div class="ex-card">
+            <div class="ex-type">Аудио-подкаст как видео</div>
+            <div class="ex-inner">
+              <div class="author-row"><div class="ava">М</div>Маша | Спорт для мам</div>
+              <div class="ex-text"><strong>В кадре:</strong> обложка подкаста или ваше фото<br><strong>Звук:</strong> запись разговора или монолога<br><br><strong>Название:</strong> «Как найти время на спорт — подкаст для мам #1»<br><br>Таймкоды в описании помогают слушателям ориентироваться.</div>
+              <div class="ex-meta">Статичная картинка + аудио = работает как подкаст</div>
+            </div>
+          </div>
+        </div>
+        <div class="tip"><strong>YouTube:</strong> многие авторы публикуют подкасты именно так — статичная обложка и аудио. Люди включают «фоном» пока делают что-то руками. Хороший формат для длинных экспертных разговоров.</div>
+      </div>
+    </div>
+
+    <!-- Дзен аудио -->
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F0F0FF;">🔮</div>
+        <div><div class="p-name">Дзен — Аудио</div><div class="p-sub">Прямой поддержки аудио нет · Используйте видео-формат</div></div>
+        <span class="p-badge badge-ok">Разрешён в РФ</span>
+      </div>
+      <div class="platform-body">
+        <div class="tip">Дзен не поддерживает загрузку отдельных аудиофайлов. Если хотите выложить подкаст на Дзен — используйте видео-формат со статичной картинкой, как на YouTube.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== БЛОК 5: ПЕРВЫЙ ПОСТ И ЗАКРЕП ===== -->
+  <div class="block-section" id="first-post">
+    <div class="eyebrow">Блок 05</div>
+    <h2>Первый пост и закреп</h2>
+    <div class="block-lesson-ref">→ Урок 2.1: Первый пост и первые подписчики</div>
+    <p class="block-intro">В уроке 2.1 вы узнали что закреплённый пост — это живой документ, который нужно обновлять. Здесь смотрим как закреп работает на каждой платформе и что туда ставить.</p>
+
+    <div class="key-point">
+      <div class="kp-label">Главное</div>
+      <p>Закреп — входная дверь блога. Новый подписчик за 10 секунд решает остаться или нет. Закреп должен отвечать: кто вы, о чём блог, зачем подписаться.</p>
+    </div>
+
+    <div class="platform-block">
+      <div class="platform-head">
+        <div class="p-emoji" style="background:#F5F5F5;">📌</div>
+        <div><div class="p-name">Закреп на разных платформах</div><div class="p-sub">Возможности и ограничения</div></div>
+      </div>
+      <div class="platform-body">
+        <div style="overflow-x: auto;">
+          <table style="width:100%; border-collapse: collapse; font-size: 14px;">
+            <thead>
+              <tr style="background: var(--bg-soft);">
+                <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Платформа</th>
+                <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Закреп</th>
+                <th style="padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--line); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase;">Что туда ставить</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">ВКонтакте</td>
+                <td style="padding: 12px 16px;">1 пост, виден отдельным блоком над лентой</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Пост-знакомство: кто вы, о чём блог, вопрос к читателю</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">Telegram</td>
+                <td style="padding: 12px 16px;">1 пост, виден при входе в канал</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Навигация по каналу + кто вы + ключевые посты</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">MAX</td>
+                <td style="padding: 12px 16px;">Есть закреп поста</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Пост-знакомство или самый популярный пост</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">TikTok</td>
+                <td style="padding: 12px 16px;">До 3 видео в профиле</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Видео-знакомство + лучшие видео по теме блога</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">Instagram*</td>
+                <td style="padding: 12px 16px;">Актуальное (highlights) + 1 закреплённый пост</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Актуальное: «обо мне», «отзывы», ключевые темы блога</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--line);">
+                <td style="padding: 12px 16px; font-weight: 700;">Дзен</td>
+                <td style="padding: 12px 16px;">Нет закрепа постов</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Описание канала (до 300 зн.) — главный «закреп»</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 16px; font-weight: 700;">YouTube</td>
+                <td style="padding: 12px 16px;">Трейлер канала + закреп видео</td>
+                <td style="padding: 12px 16px; color: var(--ink-2);">Трейлер: 60–90 сек о канале для новых. Плейлисты по темам</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <div class="ex-label">Пример поста-знакомства</div>
+          <div class="ex-cards">
+            <div class="ex-card">
+              <div class="ex-type">Закреп ВКонтакте / Telegram</div>
+              <div class="ex-inner">
+                <div class="author-row"><div class="ava">М</div>Маша | спорт для мам</div>
+                <div class="ex-text">Два года назад я думала что мамы не могут нормально заниматься спортом.<br><br>Сейчас занимаюсь каждое утро — пока все спят.<br><br>Здесь пишу о том как найти время на себя когда ты мама. Без марафонов и жёстких диет — просто честно о том что работает.<br><br>А с чего начинали вы?</div>
+                <div class="ex-meta">Крючок → кто вы через пользу → о чём блог → вопрос</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tip"><strong>Обновляйте закреп раз в 3–4 месяца.</strong> Устаревший закреп сигнализирует: здесь давно ничего не происходит. Обновили нишу, изменилась тема или вы сами — обновите и закреп.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ВЫВОД -->
+  <div class="conclusion">
+    <h2>Главное: один принцип — любая платформа</h2>
+    <p>Как строится текстовый пост, как строится видео, как работают сторис — вы уже знаете из уроков модуля. Это универсальные принципы. Платформа меняет только <strong>упаковку</strong> — объём, формат, технические ограничения. Суть и структура остаются теми же.</p>
+    <p>Поэтому самая выгодная стратегия сейчас — это мультиплатформенность. Одна идея → адаптируете под формат площадки → публикуете там где живёт ваша аудитория. Не переписываете с нуля, а перепаковываете. Это экономит время и даёт охват сразу на нескольких платформах.</p>
+    <p>Начните с одной основной платформы. Освойте её — и только потом добавляйте следующую. Это лучше чем вести пять площадок плохо.</p>
+  </div>
+
+</div>
+</body>
+</html>
