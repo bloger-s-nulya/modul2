@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 2. Урок 5 — Истории как часть контента</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#FFFFFF; --bg-soft:#F5F6F7; --bg-muted:#EDEEF0;
+    --ink:#1A1A1A; --ink-2:#4A4D52; --ink-3:#8A8E94;
+    --line:#E4E6E9; --accent:#C4F542; --accent-strong:#B8E83D; --accent-ink:#0F1A00;
+    --font-display:'Unbounded',ui-sans-serif,system-ui,sans-serif;
+    --font-body:'Manrope',ui-sans-serif,system-ui,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+    --radius-sm:10px; --radius-md:16px; --radius-lg:24px; --radius-pill:999px;
+    --shadow-sm:0 1px 2px rgba(16,18,20,.04),0 1px 1px rgba(16,18,20,.03);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 620px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); transition: background .15s, color .15s; }
+  .nav-btn.active .nav-num { background: var(--accent); color: var(--accent-ink); }
+
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) {
+    .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; }
+  }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; letter-spacing: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .compare-card { border-radius: var(--radius-md); padding: 20px; font-size: 14px; line-height: 1.6; }
+  .compare-bad { background: #FFF5F5; border: 1px solid #FCCACA; }
+  .compare-good { background: #F5FEE0; border: 1px solid #D4F097; }
+  .compare-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .compare-bad .compare-header { color: #C03030; }
+  .compare-good .compare-header { color: #4A8000; }
+  .compare-card p { color: #444; margin-bottom: 8px; }
+  .compare-card p:last-child { margin-bottom: 0; }
+
+  .headlines-list { list-style: none; display: grid; gap: 8px; margin-bottom: 16px; }
+  .headlines-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--ink); border: 1px solid var(--line); }
+  .headlines-list li::before { content: '—'; font-family: var(--font-mono); color: var(--accent-strong); font-weight: 700; flex-shrink: 0; }
+
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+
+  .secrets-grid { display: grid; gap: 12px; }
+  .secret-item { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .secret-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .secret-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .secret-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-dark p:last-of-type { margin-bottom: 20px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+
+  .hl { background: var(--accent); color: var(--accent-ink); padding: 1px 7px; border-radius: 5px; font-weight: 600; }
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink); }
+  .stat-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+
+  .footnote { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.55; color: var(--ink-3); font-family: var(--font-body); }
+  .footnote p { margin: 0; }
+  .footnote-mark { color: var(--ink-2); font-weight: 700; margin-right: 4px; }
+
+  .section-alt .card,
+  .section-alt .stat-card { background: var(--bg); }
+  .section-alt .secret-item { background: var(--bg); }
+  .section-alt .glossary-item { background: var(--bg); }
+  .section-alt .checklist-item { background: var(--bg); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .formula-steps { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 2 / Урок 5</span>
+      <span class="title-text">Истории как часть контента: 10 принципов работающих сторис</span>
+    </div>
+    <p class="hero-lead">Сторис — главный канал общения с теми, кто уже на вас подписан. Здесь формируется лояльность, и именно отсюда приходят первые покупатели.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Виктория Ложникова — Маркетолог, эксперт по соцсетям, руководитель SMM-агентства</span>
+      <span class="chip"><span class="chip-dot"></span>4 уровня контента</span>
+      <span class="chip"><span class="chip-dot"></span>Норма просмотров — 10%</span>
+      <span class="chip"><span class="chip-dot"></span>10 принципов</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Зачем сторис</button>
+    <button class="nav-btn" onclick="navTo('levels')"><span class="nav-num">2</span> 4 уровня</button>
+    <button class="nav-btn" onclick="navTo('rubrics')"><span class="nav-num">3</span> Рубрики</button>
+    <button class="nav-btn" onclick="navTo('principles')"><span class="nav-num">4</span> 10 принципов</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- СЕКЦИЯ 01: ЗАЧЕМ СТОРИС -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Зачем сторис</div>
+    <h2 class="section-title"><span class="section-title-hl">Сторис — это коммуникация с тёплой аудиторией</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Лояльность — основа продаж в соцсетях. И формируется она именно в сторис, не в рилс и не в постах.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Три канала и три разные аудитории</div>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Посты — для тёплой аудитории</div>
+            <div class="step-desc">Текстовый канал. Пишем для тех, кто уже знаком с нашим контентом и готов читать дольше пары секунд.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Сторис — для лояльной горячей аудитории</div>
+            <div class="step-desc">Видео и изображения. Создаём для тех, кто уже подписан, выбрал нас и регулярно смотрит. Норма досмотра — около 10% от подписчиков.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Рилс — для холодной аудитории</div>
+            <div class="step-desc">Короткое видео. Делаем для тех, кто нас ещё не знает. Алгоритмы выносят рилс на новых людей.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Распространённая ошибка.</strong> Все стремятся привлечь новую аудиторию и забывают про тех, кто уже есть. А первые покупатели в любой рекламе — именно из сторис. Игнорировать сторис = не работать с самой готовой к покупке частью базы.
+    </div>
+
+    <div class="card">
+      <div class="card-label">Почему сторис вообще смотрят</div>
+      <h3>Дефицит эмоций — самое постоянное состояние человека</h3>
+      <p>Контент, который передаёт эмоцию, — самый желанный. Сторис как формат для этого подходит лучше всего: короткий, личный, ежедневный. Без эмоций сторис превращается в констатацию фактов, и его пролистывают.</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Формула живых сторис</div>
+      <div class="formula-steps">
+        <span class="formula-step">Эмоция</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Контекст</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Наглядность</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">лояльность</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 02: 4 УРОВНЯ КОНТЕНТА -->
+  <section class="section" id="levels">
+    <div class="section-label"><span class="section-num">02</span>4 уровня</div>
+    <h2 class="section-title"><span class="section-title-hl">Четыре уровня контента — полная 3D-модель личности</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>Когда вы транслируете все четыре уровня, кого-то цепляет один крючок, кого-то другой. Чтобы человек остался — он не обязан разделять ваши взгляды; ему достаточно почувствовать вас «своим» хотя бы на одном уровне.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Уровень 01 · Личностный</div>
+      <h3>Какой вы как человек</h3>
+      <p>Ваши главные ценности, качества — и положительные, и отрицательные, ваши странности и особенности характера. Спикер транслирует: самореализация, семья, чувство юмора, самоирония, профессионализм. Эти же черты будут считывать подписчики — и притягиваться похожая аудитория.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Уровень 02 · Ближний круг</div>
+      <h3>Как вы взаимодействуете с близкими</h3>
+      <p>Ваше ближайшее окружение и общение с ним. Аудитории важно «посмотреть на вас со стороны»: как вы шутите с друзьями, как ведёте себя с родителями, как с детьми. Это раскрывает то, что в одиночных сторис не видно.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Уровень 03 · Социум и экспертность</div>
+      <h3>Ваши навыки, компетенции, увлечения</h3>
+      <p>Как вы взаимодействуете с миром через работу: что умеете, что у вас получается лучше, чем у других, чем вы вообще занимаетесь профессионально. Сюда же — увлечения и таланты, которые ещё не стали профессией.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Уровень 04 · Глобальные ценности</div>
+      <h3>За что вы в этом мире — или против чего</h3>
+      <p>Ваша позиция по большим темам. Что вы делаете на благо тех, кто шире вашего круга. Самый «громкий» уровень: одних он притянет, других оттолкнёт. Это нормально — без позиции не за что зацепиться.</p>
+    </div>
+
+    <div class="divider">Цели как способ вовлечения</div>
+
+    <div class="card">
+      <div class="card-label">Цели — игра в долгую</div>
+      <h3>Цель не работает без контекста</h3>
+      <p>Цели не обязаны быть глобальными. Краткосрочные — даже лучше: «похудеть на 2 кг», «начать вставать рано», «пробежать первые 5 километров». Но <span class="hl-line">перед тем, как обозначить цель, введите аудиторию в контекст</span>: для чего вам это, зачем, что изменится.</p>
+      <p style="margin-top: 8px;">Если не погрузить аудиторию в мотив — ей не интересно следить за процессом. Глубина — это и есть мотив. Без неё контент не цепляет.</p>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 03: РУБРИКИ -->
+  <section class="section section-alt" id="rubrics">
+    <div class="section-label"><span class="section-num">03</span>Рубрики</div>
+    <h2 class="section-title"><span class="section-title-hl">Контент-план сторис: постоянные, вовлекающие, экспертные</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Главное</div>
+      <p>Постоянные рубрики — крупные мазки контент-плана. Не обязаны выходить каждый день. Какие-то — раз в неделю, какие-то — реже. Главное: набор есть, и его узнают.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Постоянные рубрики — три вопроса для подбора</div>
+      <ul class="headlines-list" style="margin-bottom: 0;">
+        <li>Что я люблю делать?</li>
+        <li>Что от меня нужно людям?</li>
+        <li>За что мне платят?</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Вовлекающие рубрики</div>
+      <h3>Темы для обсуждения, актуальные сейчас</h3>
+      <p>Знаковые события, юмор, ваши диалоги с кем-то, реакция на громкую новость. Не забывайте подгружать зрителей в контекст — то, что у вас в голове уже понятно, для них может быть впервые.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Экспертные и полезные рубрики</div>
+      <h3>Короткая польза — без длинных лекций</h3>
+      <p>Демонстрация вас в работе, советы по сфере деятельности, любой полезный контент. Сторис — не учебник, поэтому даже экспертный контент здесь короткий и наглядный.</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Состав здорового контент-плана сторис</div>
+      <div class="formula-steps">
+        <span class="formula-step">Постоянные</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Вовлекающие</span>
+        <span class="formula-arrow">+</span>
+        <span class="formula-step">Экспертные</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">живой профиль</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 04: 10 ПРИНЦИПОВ -->
+  <section class="section" id="principles">
+    <div class="section-label"><span class="section-num">04</span>10 принципов</div>
+    <h2 class="section-title"><span class="section-title-hl">10 принципов сторис, которые работают</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Контекст</div>
+      <p>Сторис смотрят одним глазом — пока выходят из лифта, ведут ребёнка в школу, едут за рулём. Никто не выделяет на сторис специальное время. Поэтому каждое правило заточено под «считывается с первого взгляда».</p>
+    </div>
+
+    <div class="secrets-grid">
+      <div class="secret-item">
+        <div class="secret-num">01</div>
+        <div>
+          <div class="secret-title">Наглядность</div>
+          <div class="secret-desc">Всё, что вы говорите, важно показать. Картинки, фото, схемы. Если сторис — это просто слова, вовлечения не будет. Рассказываете про преображение — покажите фото. Про тренировку — снимите процесс.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">02</div>
+        <div>
+          <div class="secret-title">Введение в контекст</div>
+          <div class="secret-desc">Не все смотрят вас каждый день. Кто-то заходит раз в неделю. Постоянно объясняйте: что вы делаете, почему это делаете, почему это для вас важно. Тогда и старые, и новые подписчики чувствуют себя «в курсе».</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">03</div>
+        <div>
+          <div class="secret-title">Первая сторис — вовлекающая</div>
+          <div class="secret-desc">Если первую закрыли — остальные за день вам даже не покажут. Если так регулярно — алгоритм перестанет показывать ваш профиль вовсе. Первая сторис — самая важная за день.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">04</div>
+        <div>
+          <div class="secret-title">Не обязательно «здесь и сейчас»</div>
+          <div class="secret-desc">Снимать сторис прямо в моменте — необязательно. Логичнее накопить заготовки и потом, когда есть время, превратить их в осмысленную историю. Это лучше, чем бессвязные публикации в формате констатации фактов.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">05</div>
+        <div>
+          <div class="secret-title">Смена ракурсов</div>
+          <div class="secret-desc">В кино кадр меняется каждые 3–5 секунд, чтобы зритель не скучал. В сторис — то же самое: меняйте кадры, ракурсы, планы. Это повышает досматриваемость до конца.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">06</div>
+        <div>
+          <div class="secret-title">Текст ко всему, что вы говорите</div>
+          <div class="secret-desc">Большинство смотрит без звука. Если ключевая мысль не продублирована текстом — она потеряна. Прогоняйте каждую сторис через фильтр: «Что поймёт человек, у которого выключен звук и который не досматривает до конца?»</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">07</div>
+        <div>
+          <div class="secret-title">Простота оформления</div>
+          <div class="secret-desc">Много текста перегружает. Спикер оформляет всё в самом приложении соцсети, без сторонних редакторов: один шрифт, один набор стикеров. Это быстро и узнаваемо. Соберите свой такой же набор и не меняйте каждую неделю.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">08</div>
+        <div>
+          <div class="secret-title">Не давайте додумывать за вас</div>
+          <div class="secret-desc">Все ключевые мысли, выводы и финалы — проговаривайте и прописывайте. Если оставить аудиторию без вывода, она додумает сама. И не факт, что так, как вам хотелось бы.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">09</div>
+        <div>
+          <div class="secret-title">Показывайте обратную связь</div>
+          <div class="secret-desc">Особенно если кажется, что аудиторию сложно «разговорить». Заходите в директ, скриньте интересные вопросы, выкладывайте их в сторис. Это сигнал новым: «Здесь общаются, мне ответят». И они начинают писать.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">10</div>
+        <div>
+          <div class="secret-title">Одна сторис — одна мысль</div>
+          <div class="secret-desc">Не сваливайте в одну сторис «сходила на завтрак, потренировалась, встретилась с подругой». Одно событие — одна сторис. Иначе мозгу зрителя не за что зацепиться.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">Как пишем — примеры</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Слабая сторис</div>
+        <p><strong>«Сегодня насыщенный день»</strong></p>
+        <p>50-секундное видео без подписей: автор рассказывает на бегу про завтрак, тренировку, встречу с подругой и планы на вечер. Звук перекрывает шум улицы, текста нет, в финале — никакого вывода. Зритель пролистывает на третьей секунде.</p>
+        <p style="color:#C03030; font-size:12px; font-weight:600; margin-top:8px;">Несколько мыслей, нет наглядности, нет вывода, нет текста.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Сильная сторис</div>
+        <p><strong>«Утром нашла идеальный завтрак за 5 минут»</strong></p>
+        <p>Кадр-крупный план тарелки. Текстом: «Овсянка с ягодами — 5 минут, 320 ккал». Следом — короткое видео процесса (15 секунд, со сменой ракурса). Финальный кадр с подписью: «Кто ещё ест по утрам — пишите в директ, что у вас?»</p>
+        <p style="color:#4A8000; font-size:12px; font-weight:600; margin-top:8px;">Одна мысль, наглядно, текст есть, финальный вопрос для отклика.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 05: ЧЕК-ЛИСТ -->
+  <section class="section section-alt" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Чек-лист перед публикацией дневной серии сторис</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 12</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Содержание</div>
+      <ul class="checklist-items" id="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">За день затронут хотя бы один из четырёх уровней (личностный / ближний круг / экспертность / глобальные ценности)</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Аудитория введена в контекст — старый подписчик и новый понимают, что происходит</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Серия закрыта финальным выводом — за меня не додумывают</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Есть отклик аудитории, который я показала (вопрос из директа, реакция, опрос)</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Форма</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Первая сторис — вовлекающая, не банальная</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В каждой сторис — одна мысль, не «всё подряд»</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Ракурсы и планы меняются — нет трёх одинаковых кадров подряд</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Ключевая мысль продублирована текстом — без звука всё равно понятно</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Оформление</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Шрифт и стикеры — мои постоянные, не меняю каждый день</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Текста немного — не «полотно», глаз не устаёт</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Если есть видео — оно показывает, а не просто иллюстрирует слова</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Использую заготовки, а не только «здесь и сейчас» — есть осмысленный сюжет</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 06: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">Тёплая аудитория</div>
+        <div class="glossary-def">Подписчики, которые знакомы с вашим контентом и регулярно его потребляют. Канал общения с ними — посты. Готовы читать развёрнутые тексты.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Лояльная (горячая) аудитория</div>
+        <div class="glossary-def">Подписчики, которые не просто знакомы, а уже выбрали вас и регулярно вовлекаются. Их канал — сторис. Это та часть базы, из которой приходят первые покупатели.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Холодная аудитория</div>
+        <div class="glossary-def">Люди, которые вас ещё не знают. На них работает рилс — короткое видео, которое алгоритмы выносят в рекомендации новых пользователей.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">4 уровня контента</div>
+        <div class="glossary-def">Четыре пласта самораскрытия в сторис: личностный (кто я), ближний круг (как с близкими), социум и экспертность (что я умею), глобальные ценности (за что я в этом мире). Вместе формируют объёмный портрет автора.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Постоянные рубрики</div>
+        <div class="glossary-def">Регулярные темы, которые формируют узнаваемый «скелет» контента. Подбираются по трём вопросам: что я люблю делать, что от меня нужно людям, за что мне платят. Не обязаны выходить каждый день.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Контекст</div>
+        <div class="glossary-def">Объяснение «зачем», «почему» и «для чего». Без контекста цель или событие выглядят случайными. С контекстом — становятся историей, за которой хочется следить.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Принцип «одна сторис — одна мысль»</div>
+        <div class="glossary-def">Правило, по которому в одну сторис помещается одно событие или одна мысль. Несколько мыслей в одной сторис создают визуальный шум, и зритель не успевает считать ничего.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Финал серии</div>
+        <div class="glossary-def">Заключительная сторис дня, в которой проговорён или прописан вывод. Без финала аудитория додумывает сама — обычно не в вашу пользу.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Практическое задание</h3>
+      <p>Запланируйте свой первый осознанный контент-план сторис. Не «что снять сегодня», а каркас на месяц.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span>Заполните таблицу: <strong style="color:#fff;">3 постоянных рубрики</strong> (по трём вопросам — что люблю, что нужно людям, за что платят) + <strong style="color:#fff;">2 вовлекающих</strong> + <strong style="color:#fff;">2 экспертных</strong>.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span>Расставьте <strong style="color:#fff;">частоту выхода</strong> для каждой: ежедневно / 2–3 раза в неделю / раз в неделю.</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span>Для следующего дня заранее снимите 3–5 заготовок. Соберите серию по правилу <strong style="color:#fff;">«одна сторис — одна мысль»</strong>, заведите финальный вывод.</span>
+        </li>
+        <li>
+          <span class="task-step-num">04</span>
+          <span>После публикации измерьте: <strong style="color:#fff;">какой процент</strong> подписчиков посмотрел первую сторис и сколько досмотрело до последней. Норма по первой — около 10% от базы.</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">
+        Открыть чек-лист ↑
+      </a>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) { window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' }); }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','levels','rubrics','principles','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+  function toggleCheck(item) { item.classList.toggle('checked'); updateProgress(); }
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+  updateProgress();
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','levels','rubrics','principles','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>

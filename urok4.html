@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Модуль 2. Урок 4 — Практикум по съёмке видео</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display:  'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:     'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:     'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm:     10px;
+    --radius-md:     16px;
+    --radius-lg:     24px;
+    --radius-pill:   999px;
+    --shadow-sm:     0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body { font-family: var(--font-body); color: var(--ink); background: var(--bg); font-size: 16px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+
+  .hero { background: var(--bg-soft); border-bottom: 1px solid var(--line); padding: 56px 32px 48px; }
+  .hero-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 20px; display: block; }
+  .title-block { display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; margin-bottom: 24px; }
+  .stamp { display: inline-flex; align-items: center; justify-content: center; padding: 8px 14px; background: var(--accent); color: var(--accent-ink); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; margin-top: 10px; }
+  .title-text { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 3.5vw, 38px); line-height: 1.15; letter-spacing: -0.02em; }
+  .hero-lead { font-size: 17px; font-weight: 500; line-height: 1.6; color: var(--ink-2); max-width: 620px; }
+  .meta-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-pill); font-size: 13px; font-weight: 500; color: var(--ink-2); }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); flex-shrink: 0; }
+  .chip-dot.accent { background: var(--accent); }
+
+  .nav-bar { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding: 0 32px; }
+  .nav-inner { max-width: 880px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 2px; scrollbar-width: none; }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn { display: inline-flex; align-items: center; gap: 7px; padding: 12px 12px; font-family: var(--font-body); font-size: 13px; font-weight: 600; color: var(--ink-2); border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s, border-color .15s, background .15s; border-radius: 8px 8px 0 0; }
+  .nav-btn:hover { color: var(--ink); background: var(--bg-muted); }
+  .nav-btn.active { color: var(--ink); border-bottom-color: var(--accent); background: transparent; }
+  .nav-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--accent); font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--accent-ink); transition: background .15s, color .15s; }
+  .nav-btn.active .nav-num { background: var(--accent); color: var(--accent-ink); }
+
+  .page-wrap { max-width: 880px; margin: 0 auto; padding: 0 32px 100px; }
+
+  .section { padding-top: 60px; }
+  .section-alt { margin: 48px -32px 0; padding: 48px 32px 8px; background: var(--bg-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .section-alt + .section { padding-top: 60px; }
+  @media (max-width: 640px) {
+    .section-alt { margin: 48px -20px 0; padding: 40px 20px 8px; }
+  }
+  .section-label { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 600; margin-bottom: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; font-family: var(--font-mono); font-size: 10px; font-weight: 600; color: var(--ink-3); flex-shrink: 0; letter-spacing: 0; }
+  .section-title { font-family: var(--font-display); font-weight: 500; font-size: 26px; letter-spacing: -0.01em; margin-bottom: 4px; line-height: 1.2; }
+  .section-title-hl { background-image: linear-gradient(transparent 52%, var(--accent) 52%, var(--accent) 94%, transparent 94%); padding: 0 3px; }
+  .section-hr { height: 1px; background: var(--line); border: none; margin: 20px 0 28px; }
+
+  .card { background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 24px 28px; box-shadow: var(--shadow-sm); margin-bottom: 16px; }
+  .card-label { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 12px; }
+  .card h3 { font-family: var(--font-body); font-weight: 700; font-size: 18px; margin-bottom: 10px; line-height: 1.3; }
+  .card p, .card li { color: var(--ink-2); font-size: 15px; line-height: 1.65; }
+
+  .key-point { display: flex; gap: 16px; background: var(--bg-soft); border-radius: var(--radius-md); padding: 18px 22px; border-left: 3px solid var(--accent); margin-bottom: 16px; }
+  .key-point-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; padding-top: 3px; flex-shrink: 0; }
+  .key-point p { margin: 0; font-weight: 600; font-size: 15px; line-height: 1.55; color: var(--ink); }
+
+  .formula { background: var(--ink); color: #fff; border-radius: var(--radius-md); padding: 20px 24px; margin-bottom: 16px; }
+  .formula-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8A8E94; margin-bottom: 10px; }
+  .formula-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; }
+  .formula-step { background: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 8px; white-space: nowrap; }
+  .formula-arrow { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+
+  .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .compare-card { border-radius: var(--radius-md); padding: 20px; font-size: 14px; line-height: 1.6; }
+  .compare-bad { background: #FFF5F5; border: 1px solid #FCCACA; }
+  .compare-good { background: #F5FEE0; border: 1px solid #D4F097; }
+  .compare-header { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; font-weight: 600; }
+  .compare-bad .compare-header { color: #C03030; }
+  .compare-good .compare-header { color: #4A8000; }
+  .compare-card p { color: #444; margin-bottom: 8px; }
+  .compare-card p:last-child { margin-bottom: 0; }
+
+  .headlines-list { list-style: none; display: grid; gap: 8px; margin-bottom: 16px; }
+  .headlines-list li { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--bg-soft); border-radius: var(--radius-sm); font-size: 14px; font-weight: 500; color: var(--ink); border: 1px solid var(--line); }
+  .headlines-list li::before { content: '—'; font-family: var(--font-mono); color: var(--accent-strong); font-weight: 700; flex-shrink: 0; }
+
+  .steps-list { list-style: none; counter-reset: step; display: grid; gap: 0; }
+  .steps-list li { counter-increment: step; display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: start; }
+  .steps-list li:last-child { border-bottom: none; }
+  .steps-list li::before { content: counter(step, decimal-leading-zero); font-family: var(--font-mono); font-size: 12px; font-weight: 500; color: var(--ink-3); padding-top: 2px; }
+  .step-title { font-weight: 700; font-size: 15px; margin-bottom: 3px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  .callout-warn { background: #FFFBEB; border: 1px solid #F0D080; border-left: 3px solid #E0A000; border-radius: var(--radius-md); padding: 16px 20px; font-size: 14px; color: #5A4500; margin-bottom: 16px; line-height: 1.6; }
+  .callout-warn strong { color: #3A2E00; }
+
+  .secrets-grid { display: grid; gap: 12px; }
+  .secret-item { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); align-items: start; }
+  .secret-num { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--accent-ink); background: var(--accent); border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .secret-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .secret-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .service-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .service-name { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+  .service-tag { display: inline-block; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 600; margin-bottom: 10px; font-family: var(--font-mono); }
+  .tag-free { background: #E8F8D0; color: #3A6000; }
+  .tag-paid { background: #FFF0D0; color: #7A4000; }
+  .tag-freemium { background: #EEF0FF; color: #3A3080; }
+  .service-desc { font-size: 13px; color: var(--ink-2); line-height: 1.55; }
+
+  .checklist-group { margin-bottom: 24px; }
+  .checklist-group-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px; }
+  .checklist-items { list-style: none; display: grid; gap: 8px; }
+  .checklist-item { display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); cursor: pointer; transition: background .12s; }
+  .checklist-item:hover { background: var(--bg-soft); }
+  .checklist-item.checked { background: #F5FEE0; border-color: #C8F090; }
+  .check-box { flex-shrink: 0; width: 20px; height: 20px; border-radius: 6px; border: 1.5px solid var(--ink-3); margin-top: 1px; position: relative; transition: background .12s, border-color .12s; }
+  .checklist-item.checked .check-box { background: var(--accent); border-color: var(--accent); }
+  .checklist-item.checked .check-box::after { content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 10px; border-right: 2px solid var(--accent-ink); border-bottom: 2px solid var(--accent-ink); transform: rotate(45deg); }
+  .check-text { font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--ink); }
+  .checklist-item.checked .check-text { color: var(--ink-2); text-decoration: line-through; text-decoration-color: var(--ink-3); }
+
+  .checklist-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .progress-bar-wrap { flex: 1; height: 6px; background: var(--bg-muted); border-radius: var(--radius-pill); overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: var(--radius-pill); transition: width .3s ease; width: 0%; }
+  .progress-label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-3); white-space: nowrap; }
+
+  .task-dark { background: var(--ink); color: #fff; border-radius: var(--radius-lg); padding: 32px; margin-top: 24px; }
+  .task-dark h3 { font-family: var(--font-display); font-weight: 500; font-size: 22px; margin-bottom: 16px; letter-spacing: -0.01em; }
+  .task-dark p { color: #CCC; font-size: 15px; line-height: 1.65; margin-bottom: 12px; }
+  .task-dark p:last-of-type { margin-bottom: 20px; }
+  .task-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+  .task-steps li { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: #CCC; line-height: 1.55; }
+  .task-step-num { font-family: var(--font-mono); font-size: 11px; color: var(--accent); font-weight: 600; flex-shrink: 0; padding-top: 2px; }
+  .btn-accent { display: inline-flex; align-items: center; gap: 8px; padding: 14px 24px; background: var(--accent); color: var(--accent-ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; border-radius: var(--radius-pill); border: none; cursor: pointer; text-decoration: none; transition: background .15s; }
+  .btn-accent:hover { background: var(--accent-strong); }
+
+  .hl { background: var(--accent); color: var(--accent-ink); padding: 1px 7px; border-radius: 5px; font-weight: 600; }
+  .hl-line { display: inline; background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%); padding: 0 2px; font-weight: 600; }
+
+  .glossary { display: grid; gap: 10px; }
+  .glossary-item { padding: 16px 20px; background: var(--bg-soft); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .glossary-term { font-weight: 700; font-size: 15px; margin-bottom: 6px; color: var(--ink); }
+  .glossary-def { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .divider { display: flex; align-items: center; gap: 14px; margin: 24px 0; color: var(--ink-3); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card { padding: 18px 20px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-md); }
+  .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 6px; color: var(--ink); }
+  .stat-label { font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+
+  .footnote { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.55; color: var(--ink-3); font-family: var(--font-body); }
+  .footnote p { margin: 0; }
+  .footnote-mark { color: var(--ink-2); font-weight: 700; margin-right: 4px; }
+
+  .section-alt .card,
+  .section-alt .service-card,
+  .section-alt .stat-card { background: var(--bg); }
+  .section-alt .secret-item { background: var(--bg); }
+  .section-alt .glossary-item { background: var(--bg); }
+  .section-alt .checklist-item { background: var(--bg); }
+
+  .service-link { display: inline-flex; align-items: center; gap: 5px; margin-top: 10px; font-size: 12px; font-weight: 600; font-family: var(--font-mono); color: var(--ink-2); text-decoration: none; border: 1px solid var(--line); border-radius: var(--radius-pill); padding: 4px 11px; transition: border-color .15s, color .15s; }
+  .service-link:hover { border-color: var(--ink); color: var(--ink); }
+
+  @media (max-width: 640px) {
+    .hero { padding: 36px 20px 32px; }
+    .page-wrap { padding: 0 20px 80px; }
+    .nav-bar { padding: 0 20px; }
+    .compare-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .stats-grid { grid-template-columns: 1fr; }
+    .title-block { grid-template-columns: 1fr; gap: 12px; }
+    .stamp { margin-top: 0; }
+    .formula-steps { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Fitstars · Блогер с нуля</span>
+    <div class="title-block">
+      <span class="stamp">Модуль 2 / Урок 4</span>
+      <span class="title-text">Практикум по съёмке видео: от первого рилса до монтажа в CapCut</span>
+    </div>
+    <p class="hero-lead">Снять и выложить видео страшно — даже после ста публикаций. Учимся переступать страх, делать на 6 из 10, выстраивать рилс по структуре и собирать его в CapCut.</p>
+    <div class="meta-chips">
+      <span class="chip"><span class="chip-dot accent"></span>Анастасия Дробот — Блогер @istor.ichka</span>
+      <span class="chip"><span class="chip-dot"></span>4 барьера новичка</span>
+      <span class="chip"><span class="chip-dot"></span>Структура залетающего рилса</span>
+      <span class="chip"><span class="chip-dot"></span>Монтаж в CapCut пошагово</span>
+    </div>
+  </div>
+</header>
+
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="navTo('intro')"><span class="nav-num">1</span> Главное</button>
+    <button class="nav-btn" onclick="navTo('barriers')"><span class="nav-num">2</span> Барьеры новичка</button>
+    <button class="nav-btn" onclick="navTo('video')"><span class="nav-num">3</span> Видео</button>
+    <button class="nav-btn" onclick="navTo('posts')"><span class="nav-num">4</span> Первый пост</button>
+    <button class="nav-btn" onclick="navTo('checklist')"><span class="nav-num">5</span> Чек-лист</button>
+    <button class="nav-btn" onclick="navTo('glossary')"><span class="nav-num">6</span> Глоссарий</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- СЕКЦИЯ 01: ГЛАВНОЕ -->
+  <section class="section" id="intro">
+    <div class="section-label"><span class="section-num">01</span>Главное</div>
+    <h2 class="section-title"><span class="section-title-hl">Видео в черновиках не приносят подписчиков</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Лучше сделать на 6 из 10 и опубликовать, чем сделать на 10 из 10 и оставить в папке. Ваши подписчики никогда не увидят то, что лежит в черновиках.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Зачем этот урок</div>
+      <h3>Теория без практики испаряется за неделю</h3>
+      <p>Вы можете пройти курс до конца, прочитать десять книг и накопить идей на год. Это не сделает вас блогером. Блогером делает <span class="hl-line">регулярная практика</span>: одно видео, потом следующее, потом ещё. Сегодня — ровно об этом.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Личный пример Анастасии</div>
+      <h3>Полтора года — и 80 тысяч подписчиков по «чуть-чуть»</h3>
+      <p>За полтора года ведения блога Анастасия выложила столько постов и рилсов, что уже не помнит точное количество. Из них вирусно «залетели» штук 15. Остальные просто были — стабильно, 3–4 раза в неделю. Аудитория собралась именно на этой регулярности.</p>
+      <p style="margin-top: 8px;">«Каждый день по чуть-чуть прирост, прирост, прирост. И к этому так привыкаешь, что не видишь разницы — когда был ноль, и когда стало 80 тысяч».</p>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Формула регулярного блога</div>
+      <div class="formula-steps">
+        <span class="formula-step">Сделать на 6/10</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Опубликовать</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Сделать следующий</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">прирост</span>
+      </div>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Работайте по любви.</strong> Если вы не любите процесс — формат не тот. Анастасия рассказывает: пыталась переснять старое видео про плакаты, потому что «надо», а не потому что хочется. Видео месяц лежало в папке, было сделано без души и не набрало просмотров. Регулярность держится только на том процессе, который зажигает.
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 02: БАРЬЕРЫ -->
+  <section class="section" id="barriers">
+    <div class="section-label"><span class="section-num">02</span>Барьеры новичка</div>
+    <h2 class="section-title"><span class="section-title-hl">Четыре страха, которые держат на старте</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Важно</div>
+      <p>Эти страхи есть не только у новичков. Они есть и у тех, кто ведёт блог пять лет. Разница в одном: опытный знает, что делать с этим страхом.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Барьер 01 · «Подожду до идеального момента»</div>
+      <h3>Идеального момента не будет</h3>
+      <p>«Куплю камеру — тогда начну». «Куплю микрофон — тогда начну». «Закончу четвёртый модуль — точно начну». Так не бывает. Никогда не наступит день, когда вы поймёте: вот сегодня я становлюсь блогером. И не наступит того дня, когда накопленные знания вдруг дадут стопроцентный результат сами по себе.</p>
+      <p style="margin-top: 8px;">Теория и практика идут рядом. Получили дозу информации — отрабатывайте сразу же. Иначе всё откладывается куда-то далеко в голове и через неделю испаряется.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Барьер 02 · «Опубликовала — и тишина»</div>
+      <h3>На новом аккаунте даже хороший контент не набирает</h3>
+      <p>Алгоритмам соцсети нужно время, чтобы понять, кому вас показывать. Анастасия зашла в TikTok с уже популярными в других сетях видео — и они не зашли. Те же ролики на Instagram* и ВК набирали миллионы. Дело не в качестве — дело в том, что у нового аккаунта нет аудитории, которая «пушит» контент в первые часы.</p>
+      <p style="margin-top: 8px;"><span class="hl-line">Метафора:</span> представьте пустую комнату без мебели. В неё ещё не хочется заходить, потому что непонятно, какой там вайб. Подписчики так же смотрят на пустой профиль. Ваша задача в первые 10–20 публикаций — обставить комнату. Жилец придёт потом.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Барьер 03 · «У других лучше»</div>
+      <h3>Никто не знает, с чем вы это сравниваете</h3>
+      <p>Вы посмотрели результат и сравнили с тем, как видео выглядело у вас в голове до съёмки. Никто, кроме вас, этого «как должно было быть» не видит. Подписчик видит только то, что вы выложили — и ему не с чем сравнивать.</p>
+      <p style="margin-top: 8px;">Не каждый блогер каждый день работает на 10 из 10. Достаточно на 6, на 7. Если получилось «не так круто, как задумано» — это всё равно контент. Публикуем.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">Барьер 04 · «Засмеют знакомые»</div>
+      <h3>Людям про вас всё равно через десять минут</h3>
+      <p>Знакомые могут пошутить, но через десять минут переключаются на себя или на следующего человека. Если уж кто-то критикует — чаще это про то, чего критикующий сам себе не разрешает.</p>
+      <p style="margin-top: 8px;"><strong>Метод весов от Анастасии:</strong> на одну чашу — ваша творческая реализация и заработок. На вторую — отсутствие разговоров о вас. Что важнее? Если первое — продолжайте. Даже на гору Эльбрус в Яндекс.Картах есть отзывы на одну звезду. Что уж говорить про блог.</p>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Когда мнения разделились — это успех.</strong> Если на ваш блог появились разные точки зрения — поздравляем, вы вышли за пределы своего уютного комьюнити. Дотянулись до разных людей. Любое внимание — это популярность. Никак на это реагировать не нужно.
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 03: ВИДЕО -->
+  <section class="section section-alt" id="video">
+    <div class="section-label"><span class="section-num">03</span>Видео</div>
+    <h2 class="section-title"><span class="section-title-hl">Залетающий рилс: технический минимум, структура, монтаж</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Принцип</div>
+      <p>Никто не даёт чёткую инструкцию «сделай А, Б, В — и у тебя всё получится». Это соцсети, реакцию людей предугадать сложно. Но есть конкретные шаги, которые увеличивают вероятность попасть в рекомендации.</p>
+    </div>
+
+    <div class="divider">Технический минимум — три вещи</div>
+
+    <div class="card">
+      <div class="card-label">01 · Свет</div>
+      <h3>Окно, дневной свет или лампа за 1300 рублей</h3>
+      <p>Самое простое — встать перед окном с дневным светом. Если такой роскоши нет, на маркетплейсе можно заказать фотосвет на треноге за 1300 рублей: разные режимы, мягкое освещение в любое время суток. Для старта этого достаточно.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">02 · Звук</div>
+      <h3>Тишина важнее микрофона</h3>
+      <p>Когда вы записываете на фоне дороги, машин, пылесоса — даже самое интересное содержание теряется. Перед записью убедитесь, что вокруг тихо. Закройте окно, выключите технику.</p>
+      <p style="margin-top: 8px;">Микрофон необязателен. Анастасия озвучивает рилс без него. Если всё-таки берёте — простой петличный за 2000 рублей плюс <strong>пушистый ветрозащитный колпачок</strong> (он убирает резкие громкие звуки от прикосновений) — этого хватит.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-label">03 · Речь</div>
+      <h3>Без долгих «эээ» и пауз на тупняк</h3>
+      <p>Эпоха быстрая, всё пролистывают. Если чувствуете, что мысль идёт долго — отрепетируйте, перезапишите. Длинные паузы и «эээ» вырезаются на монтаже.</p>
+    </div>
+
+    <div class="divider">Структура залетающего рилса</div>
+
+    <div class="card">
+      <div class="card-label">Из чего состоит вертикальное видео</div>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Крючок (первая секунда)</div>
+            <div class="step-desc">То, что задержит палец на видео. Может быть визуальным (необычный предмет, действие, внешность) или текстовым (кричащий заголовок, шокирующая фраза, фраза с двойным дном). Зритель приходит за эмоцией — крючок её даёт.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Основная часть (минута–полторы)</div>
+            <div class="step-desc">Сама суть. Не растягивать. Нарезка чёткая, ёмкая, динамичная. Если есть лишнее — режем.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Призыв к действию</div>
+            <div class="step-desc">«Подпишись, продолжение в профиле» уже надоело и раздражает часть зрителей. Лучше задать вопрос, на который аудитория захочет ответить — даже простой и «дурацкий». Анастасия после рилса про чашки в учительской спросила: «А у вас в кабинете есть посуда для учеников?» — и получила комментарии. Вопрос = актив.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="formula">
+      <div class="formula-label">Формула рилса</div>
+      <div class="formula-steps">
+        <span class="formula-step">Крючок</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Суть (1–1.5 мин)</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step">Вопрос к зрителю</span>
+        <span class="formula-arrow">→</span>
+        <span class="formula-step" style="background: rgba(196,245,66,0.2); color: var(--accent);">отклик</span>
+      </div>
+    </div>
+
+    <div class="divider">Монтаж в CapCut — пошагово от Анастасии</div>
+
+    <div class="card">
+      <div class="card-label">Как Анастасия собирает 40-секундный рилс</div>
+      <ul class="steps-list">
+        <li>
+          <div>
+            <div class="step-title">Загрузить материал в новый проект</div>
+            <div class="step-desc">Анастасия снимает «огромными кусками» по 6–10 минут, неважно какой длины — всё равно режется. Сразу несколько таких кусков загружаются в новый проект CapCut.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Нарезать на короткие фрагменты по 1–2 секунды</div>
+            <div class="step-desc">Из больших кусков получается 20–30 коротких. Каждый фрагмент — секунда, полторы, две. Длиннее — зритель скучает.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Выбрать самые удачные</div>
+            <div class="step-desc">Из 20–30 — оставить 10–15 лучших. Где больше смысла или где автор «хорошо получился». Если три похожих фрагмента — оставляем один, самый динамичный.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Чередовать планы</div>
+            <div class="step-desc">Меняем фрагменты местами так, чтобы дальний план сменялся крупным и наоборот. Глаз не устаёт, темп держится.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Цветокоррекция</div>
+            <div class="step-desc">Анастасия затемняет светлое видео и добавляет жёлто-оранжевый оттенок — её узнаваемый стиль. Настройка применяется ко всем кадрам сразу (если свет одинаковый) или к каждому отдельно.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Заголовок: цепляющий, контрастный, с эмодзи</div>
+            <div class="step-desc">Один шрифт, но разный размер букв: первая строчка крупная, вторая мельче. Тени для контраста, яркий цвет на ключевую фразу, эмодзи вокруг текста, анимация для динамики.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Озвучка</div>
+            <div class="step-desc">Текст заранее набивается в Word, потом начитывается в CapCut. Голос помогает зрителю познакомиться с автором — внешность, голос, манера. Это растит подписку.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Субтитры — обязательно</div>
+            <div class="step-desc">Большая часть зрителей смотрит без звука. Субтитры генерируются автоматически по озвучке. Анастасия использует свой шрифт «Молоко», убирает обводку, оставляет только тени. Первые фразы убирает — их закрывает заголовок.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Музыка на фон</div>
+            <div class="step-desc">Из библиотеки CapCut или загрузить свою. Голос — громче, музыка — тише, чтобы не глушила речь.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="callout-warn">
+      <strong>Что в итоге.</strong> Из 6–10-минутного исходника получается 40 секунд готового рилса. Так Анастасия упаковала видео «Три вещи, которые нужны каждому учителю»: настольный календарь, запас шоколада для учеников, онлайн-таймер. Метод воспроизводимый.
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 04: ПЕРВЫЙ ПОСТ -->
+  <section class="section" id="posts">
+    <div class="section-label"><span class="section-num">04</span>Первый пост</div>
+    <h2 class="section-title"><span class="section-title-hl">Как написать первый пост так, чтобы его прочитали</span></h2>
+    <hr class="section-hr">
+
+    <div class="key-point" style="margin-bottom: 24px;">
+      <div class="key-point-label">Главное</div>
+      <p>Люди не хотят читать «как профессор в университете». Пишите через «я-послание» — у меня есть опыт, я хочу им поделиться. Это вызывает в разы больше интереса.</p>
+    </div>
+
+    <div class="secrets-grid">
+      <div class="secret-item">
+        <div class="secret-num">01</div>
+        <div>
+          <div class="secret-title">Личная история</div>
+          <div class="secret-desc">«Почему я решила пойти в педагогику», «Почему я завела блог», «Почему я тренируюсь три раза в неделю». Конкретный мотив, конкретный момент решения. Не «потому что важно», а «потому что вот так получилось».</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">02</div>
+        <div>
+          <div class="secret-title">Разбор опыта</div>
+          <div class="secret-desc">«Пять фишек, которые я внедряю в свой блог», «Десять приёмов, которые помогают мне удерживать дисциплину на уроке». Структурированный список из вашей практики — сохраняют и пересылают.</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">03</div>
+        <div>
+          <div class="secret-title">Мнение</div>
+          <div class="secret-desc">«Как я отношусь к двойкам в журнале», «Как я отношусь к ученикам, которые не делают домашку», «Как я отношусь к публикации рилс каждый день». Спорные темы, но обязательно — ваша позиция, не общее «давайте подумаем».</div>
+        </div>
+      </div>
+      <div class="secret-item">
+        <div class="secret-num">04</div>
+        <div>
+          <div class="secret-title">Ответ на вопрос</div>
+          <div class="secret-desc">Классическое «Меня часто спрашивают…» уже звучит шаблонно — ему не верят. Замените на «Что бы я посоветовала себе пять лет назад» или «Если бы мне сейчас задали этот вопрос…». Та же логика — другая упаковка.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider">Как пишем — примеры</div>
+
+    <div class="compare-grid">
+      <div class="compare-card compare-bad">
+        <div class="compare-header">Слабый вариант</div>
+        <p><strong>«Как нужно снимать рилс»</strong></p>
+        <p>В современном мире рилс играет важную роль для блогеров. Следует отметить, что нужно соблюдать ряд правил. Снимайте при хорошем свете, используйте микрофон, добавляйте субтитры. Это позволит достичь хороших результатов.</p>
+        <p style="color:#C03030; font-size:12px; font-weight:600; margin-top:8px;">Канцелярит, общие слова, «как профессор». Никакой личной позиции.</p>
+      </div>
+      <div class="compare-card compare-good">
+        <div class="compare-header">Сильный вариант</div>
+        <p><strong>«Я мучилась с одним рилсом полтора месяца. Вот что поняла»</strong></p>
+        <p>Я переснимала видео про плакаты, которое уже снимала год назад. Месяц лежало в папке. Потом ещё месяц — после монтажа без озвучки. Сделала через силу — собрало ноль просмотров. Если процесс не заводит — это видно в кадре. Беритесь только за то, что зажигает.</p>
+        <p style="color:#4A8000; font-size:12px; font-weight:600; margin-top:8px;">Через «я», конкретный пример, личный вывод.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 05: ЧЕК-ЛИСТ -->
+  <section class="section section-alt" id="checklist">
+    <div class="section-label"><span class="section-num">05</span>Чек-лист</div>
+    <h2 class="section-title"><span class="section-title-hl">Чек-лист перед публикацией видео или поста</span></h2>
+    <hr class="section-hr">
+
+    <div class="checklist-progress">
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progress-fill"></div>
+      </div>
+      <span class="progress-label" id="progress-label">0 / 12</span>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Перед съёмкой видео</div>
+      <ul class="checklist-items" id="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Свет: окно, дневной или мягкий искусственный — есть</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Тишина — закрыто окно, выключена техника, нет посторонних звуков</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я понимаю, какая мысль должна остаться у зрителя после видео</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Сценарий или хотя бы тезисы есть — не импровизирую вслепую</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">После монтажа</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В первой секунде есть крючок — визуальный или текстовый</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Длина — до 1,5 минут, нет «провисаний»</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Планы чередуются — крупный и дальний идут попеременно</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">В конце есть вопрос или конкретный призыв, не «подпишись»</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="checklist-group">
+      <div class="checklist-group-title">Перед публикацией поста</div>
+      <ul class="checklist-items">
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Текст написан через «я», а не «как профессор»</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Это один из четырёх типов: история / разбор опыта / мнение / ответ</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Нет канцеляритов: «следует отметить», «играет важную роль», «таким образом»</span>
+        </li>
+        <li class="checklist-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <span class="check-text">Я готова опубликовать пост на 6 из 10 вместо того, чтобы оставить «идеал» в черновиках</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- СЕКЦИЯ 06: ГЛОССАРИЙ -->
+  <section class="section section-alt" id="glossary">
+    <div class="section-label"><span class="section-num">06</span>Глоссарий</div>
+    <h2 class="section-title"><span class="section-title-hl">Глоссарий урока</span></h2>
+    <hr class="section-hr">
+
+    <div class="glossary">
+      <div class="glossary-item">
+        <div class="glossary-term">Барьер новичка</div>
+        <div class="glossary-def">Внутреннее препятствие, не связанное с реальным дефицитом ресурсов. Самые частые: ожидание идеального момента, ожидание быстрого результата, сравнение с чужой серединой пути и страх осуждения знакомых.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Принцип «6 из 10»</div>
+        <div class="glossary-def">Установка, по которой опубликованное «среднего качества» всегда лучше, чем неопубликованное «идеальное». Помогает не зависнуть на бесконечной правке. Видео в черновиках не приносят подписчиков.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Алгоритмы соцсети</div>
+        <div class="glossary-def">Механизм, который решает, кому показывать ваше видео. На новом аккаунте им нужно время «обучиться» — поэтому первые 10–20 публикаций обычно собирают мало просмотров, даже если контент качественный.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Крючок (hook)</div>
+        <div class="glossary-def">Первая секунда видео или первая фраза поста — то, что заставляет зрителя задержаться. Может быть визуальным (необычный предмет, действие) или текстовым (кричащий заголовок, шокирующая фраза). Без крючка дальше не смотрят.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Я-послание</div>
+        <div class="glossary-def">Способ подачи материала через личный опыт и позицию автора, а не через нейтральное «как делать правильно». Пост через «я» вызывает в разы больше интереса, чем абстрактный экспертный текст.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Метод весов</div>
+        <div class="glossary-def">Приём от Анастасии для борьбы со страхом осуждения. На одной чаше — творческая реализация и заработок, на другой — отсутствие разговоров о вас. Помогает увидеть, что важнее, и переступить через страх «что подумают».</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Цветокоррекция</div>
+        <div class="glossary-def">Изменение света, контраста и оттенков на видео в монтажном приложении. Делает все кадры узнаваемо «в одном стиле». В CapCut применяется к одному фрагменту, а потом растягивается на весь рилс.</div>
+      </div>
+      <div class="glossary-item">
+        <div class="glossary-term">Субтитры</div>
+        <div class="glossary-def">Текстовая дорожка под видео. Большая часть зрителей смотрит без звука, поэтому субтитры — обязательный элемент. В CapCut генерируются автоматически по озвучке, остаётся отредактировать шрифт и опечатки.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЗАДАНИЕ -->
+  <section class="section section-alt" id="task">
+    <div class="task-dark">
+      <h3>Практическое задание</h3>
+      <p>Никаких «потом». Сегодня — снять и выложить. Цель — не идеальное видео, а пройденный круг от съёмки до публикации.</p>
+      <ul class="task-steps">
+        <li>
+          <span class="task-step-num">01</span>
+          <span>Снимите <strong style="color:#fff;">один большой кусок</strong> 5–10 минут на одну тему — без сценария, просто говорящая голова. Свет: окно или лампа. Тишина вокруг.</span>
+        </li>
+        <li>
+          <span class="task-step-num">02</span>
+          <span>Загрузите в CapCut и нарежьте на короткие фрагменты по 1–2 секунды. Из 20–30 кусочков выберите <strong style="color:#fff;">10–15 лучших</strong>.</span>
+        </li>
+        <li>
+          <span class="task-step-num">03</span>
+          <span>Соберите рилс по структуре: <strong style="color:#fff;">крючок → суть → вопрос</strong>. Добавьте заголовок, цветокоррекцию, субтитры, фоновую музыку.</span>
+        </li>
+        <li>
+          <span class="task-step-num">04</span>
+          <span>Опубликуйте — даже если «не дотянули» по своим ощущениям. <strong style="color:#fff;">Шесть из десяти — норма.</strong> Идём дальше.</span>
+        </li>
+        <li>
+          <span class="task-step-num">05</span>
+          <span>Параллельно напишите <strong style="color:#fff;">один пост через «я»</strong> — выберите один из четырёх типов (история / разбор / мнение / ответ).</span>
+        </li>
+      </ul>
+      <a class="btn-accent" onclick="navTo('checklist')" style="cursor:pointer;">
+        Открыть чек-лист ↑
+      </a>
+    </div>
+  </section>
+
+  <!-- СНОСКА -->
+  <footer class="footnote">
+    <p><span class="footnote-mark">*</span> Instagram принадлежит компании Meta, признанной экстремистской и запрещённой на территории Российской Федерации.</p>
+  </footer>
+
+</div>
+
+<script>
+  function navTo(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      window.scrollTo({ top: el.offsetTop - 60, behavior: 'smooth' });
+    }
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const sections = ['intro','barriers','video','posts','checklist','glossary'];
+    const idx = sections.indexOf(id);
+    if (idx > -1) document.querySelectorAll('.nav-btn')[idx].classList.add('active');
+  }
+
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const all = document.querySelectorAll('.checklist-item');
+    const done = document.querySelectorAll('.checklist-item.checked');
+    const pct = all.length ? Math.round((done.length / all.length) * 100) : 0;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = done.length + ' / ' + all.length;
+  }
+
+  updateProgress();
+
+  window.addEventListener('scroll', () => {
+    const sections = ['intro','barriers','video','posts','checklist','glossary','task'];
+    const offset = 120;
+    let current = 0;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && window.scrollY + offset >= el.offsetTop) current = i;
+    });
+    document.querySelectorAll('.nav-btn').forEach((b, i) => {
+      b.classList.toggle('active', i === Math.min(current, 5));
+    });
+  });
+</script>
+
+</body>
+</html>
