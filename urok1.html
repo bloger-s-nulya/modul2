@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Урок 2.1 — Первый пост и первые подписчики</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:            #FFFFFF;
+    --bg-soft:       #F5F6F7;
+    --bg-muted:      #EDEEF0;
+    --ink:           #1A1A1A;
+    --ink-2:         #4A4D52;
+    --ink-3:         #8A8E94;
+    --line:          #E4E6E9;
+    --accent:        #C4F542;
+    --accent-strong: #B8E83D;
+    --accent-ink:    #0F1A00;
+    --font-display: 'Unbounded', ui-sans-serif, system-ui, sans-serif;
+    --font-body:    'Manrope', ui-sans-serif, system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+    --radius-sm: 10px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(16,18,20,.04), 0 1px 1px rgba(16,18,20,.03);
+    --shadow-md: 0 4px 16px rgba(16,18,20,.06);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    color: var(--ink);
+    background: var(--bg);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 740px; margin: 0 auto; padding: 56px 32px 100px; }
+
+  /* ——— Шапка урока ——— */
+  .lesson-header { margin-bottom: 48px; }
+  .breadcrumb {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb span { color: var(--line); }
+
+  .title-block {
+    display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start;
+    margin-bottom: 20px;
+  }
+  .stamp {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 8px 14px;
+    background: var(--accent); color: var(--accent-ink);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 10px; white-space: nowrap;
+  }
+  .lesson-title {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: clamp(26px, 4vw, 38px); line-height: 1.1; letter-spacing: -0.02em;
+    margin: 0;
+  }
+
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: var(--radius-pill);
+    font-size: 13px; font-weight: 500; color: var(--ink-2);
+  }
+  .chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-3); }
+
+  .lead-text {
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 18px; line-height: 1.6; color: var(--ink);
+    margin: 24px 0 0; padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ——— Секции ——— */
+  .section { margin-top: 48px; }
+  .section-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: var(--font-display); font-weight: 500;
+    font-size: 22px; line-height: 1.2; letter-spacing: -0.01em;
+    margin: 0 0 20px;
+  }
+
+  /* ——— Ключевой тезис ——— */
+  .key-point {
+    display: flex; gap: 16px;
+    background: var(--bg-soft);
+    border-radius: var(--radius-md);
+    padding: 20px 24px;
+    border-left: 3px solid var(--accent);
+    margin: 24px 0;
+  }
+  .key-point-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3);
+    white-space: nowrap; padding-top: 3px; flex-shrink: 0;
+  }
+  .key-point p { margin: 0; font-weight: 500; font-size: 16px; }
+
+  /* ——— Тело текста ——— */
+  .body-text { font-size: 16px; line-height: 1.7; color: var(--ink); margin: 16px 0; }
+  .body-text + .body-text { margin-top: 12px; }
+
+  .highlight {
+    background: var(--accent); color: var(--accent-ink);
+    padding: 2px 7px; border-radius: 5px; font-weight: 600;
+  }
+  .highlight-line {
+    display: inline;
+    background-image: linear-gradient(transparent 55%, var(--accent) 55%, var(--accent) 92%, transparent 92%);
+    padding: 0 2px; font-weight: 600;
+  }
+
+  /* ——— Шаги ——— */
+  .steps { counter-reset: step; list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+  .steps li {
+    counter-increment: step;
+    display: grid; grid-template-columns: 44px 1fr; gap: 16px; align-items: start;
+    padding: 18px 0; border-bottom: 1px solid var(--line);
+  }
+  .steps li:last-child { border-bottom: none; }
+  .steps li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: var(--font-mono); font-size: 13px; font-weight: 500;
+    color: var(--ink-3); padding-top: 2px;
+  }
+  .step-title { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+  .step-desc { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  /* ——— Карточка ——— */
+  .card {
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: var(--radius-lg); padding: 28px;
+    box-shadow: var(--shadow-sm); margin: 20px 0;
+  }
+  .card-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px;
+  }
+
+  /* ——— Сетка тем ——— */
+  .topics-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin-top: 16px;
+  }
+  .topic-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 16px;
+    background: var(--bg-soft); border-radius: var(--radius-md);
+    border: 1px solid var(--line);
+  }
+  .topic-num {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    color: var(--accent-ink); background: var(--accent);
+    padding: 2px 7px; border-radius: 5px; flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .topic-text { font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--ink); }
+  .topic-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+  /* ——— Тёмный колл-аут ——— */
+  .callout-dark {
+    background: var(--ink); color: #fff;
+    border-radius: var(--radius-lg); padding: 28px 32px; margin: 28px 0;
+  }
+  .callout-dark h3 {
+    font-family: var(--font-display); font-weight: 500; margin: 0 0 10px; font-size: 20px;
+  }
+  .callout-dark p { margin: 0 0 8px; color: #CFD1D4; font-size: 15px; }
+  .callout-dark p:last-child { margin-bottom: 0; }
+
+  /* ——— Цитата ——— */
+  .quote-block {
+    font-family: var(--font-display); font-weight: 400;
+    font-size: 20px; line-height: 1.45; letter-spacing: -0.01em;
+    color: var(--ink);
+    border-left: 2px solid var(--ink);
+    padding: 4px 0 4px 20px;
+    margin: 28px 0;
+  }
+  .quote-author {
+    display: block; margin-top: 10px;
+    font-family: var(--font-body); font-size: 13px; font-weight: 500;
+    color: var(--ink-3); letter-spacing: 0.02em;
+  }
+
+  /* ——— Чек-лист ——— */
+  .checklist { list-style: none; padding: 0; margin: 16px 0; display: grid; gap: 10px; }
+  .checklist li {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 14px 18px;
+    background: var(--bg); border: 1px solid var(--line);
+    border-radius: var(--radius-md);
+  }
+  .check-box {
+    flex: 0 0 22px; width: 22px; height: 22px; border-radius: 7px;
+    border: 1.5px solid var(--line); margin-top: 1px;
+  }
+  .task-title { font-weight: 600; font-size: 15px; }
+  .task-meta { font-size: 13px; color: var(--ink-3); margin-top: 3px; }
+
+  /* ——— Поле для заметок ——— */
+  .note-field {
+    background: var(--bg-soft); border: 1px dashed #C4C7CC;
+    border-radius: var(--radius-md); padding: 20px; margin-top: 20px;
+  }
+  .note-field-label {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-3); margin-bottom: 10px;
+  }
+  .note-field-lines {
+    background-image: repeating-linear-gradient(
+      transparent, transparent 27px, var(--line) 27px, var(--line) 28px
+    );
+    height: 112px;
+  }
+
+  /* ——— Разделитель ——— */
+  .divider {
+    display: flex; align-items: center; gap: 16px;
+    margin: 36px 0; color: var(--ink-3);
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .divider::before, .divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--line);
+  }
+
+  /* ——— Итоги ——— */
+  .outcomes {
+    display: grid; gap: 10px; margin-top: 16px;
+  }
+  .outcome-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 14px 18px;
+    background: var(--bg-soft); border-radius: var(--radius-md);
+  }
+  .outcome-check {
+    width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+    background: var(--accent); position: relative; margin-top: 1px;
+  }
+  .outcome-check::after {
+    content: ''; position: absolute; left: 7px; top: 3px;
+    width: 6px; height: 10px;
+    border-right: 2px solid var(--accent-ink);
+    border-bottom: 2px solid var(--accent-ink);
+    transform: rotate(45deg);
+  }
+  .outcome-text { font-weight: 600; font-size: 15px; }
+
+  /* ——— Домашнее задание ——— */
+  .hw-block {
+    background: var(--ink); color: #fff;
+    border-radius: var(--radius-lg); padding: 32px; margin-top: 40px;
+  }
+  .hw-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+  }
+  .hw-block h3 {
+    font-family: var(--font-display); font-weight: 500; font-size: 22px; margin: 0 0 20px;
+  }
+  .hw-items { display: grid; gap: 12px; }
+  .hw-item {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: rgba(255,255,255,0.06); border-radius: var(--radius-md);
+    padding: 16px 18px;
+  }
+  .hw-star {
+    background: var(--accent); color: var(--accent-ink);
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    padding: 3px 8px; border-radius: 5px; flex-shrink: 0; margin-top: 1px;
+  }
+  .hw-text { color: #E8EAED; font-size: 15px; line-height: 1.5; font-weight: 500; }
+
+  /* ——— Навигация ——— */
+  .nav-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--line);
+    gap: 12px;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: var(--font-body); font-weight: 600; font-size: 15px;
+    padding: 14px 24px; border-radius: var(--radius-pill);
+    border: 1px solid transparent; cursor: pointer; text-decoration: none;
+    transition: background .15s, transform .08s;
+  }
+  .btn-primary { background: var(--accent); color: var(--accent-ink); }
+  .btn-primary:hover { background: var(--accent-strong); }
+  .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover { background: var(--bg-soft); }
+
+  @media (max-width: 640px) {
+    .page { padding: 36px 20px 72px; }
+    .title-block { grid-template-columns: 1fr; gap: 10px; }
+    .stamp { justify-self: start; margin-top: 0; }
+    .topics-grid { grid-template-columns: 1fr; }
+    .nav-row { flex-direction: column; align-items: stretch; }
+    .nav-row .btn { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ——— Шапка ——— -->
+  <header class="lesson-header">
+    <div class="breadcrumb">
+      Блогер с нуля 2026
+      <span>·</span>
+      Неделя 2
+      <span>·</span>
+      Модуль 2 — Первый контент и первые подписчики
+    </div>
+
+    <div class="title-block">
+      <span class="stamp">Урок 2.1</span>
+      <h1 class="lesson-title">Первый пост и первые подписчики</h1>
+    </div>
+
+    <div class="meta-row">
+      <span class="chip"><span class="chip-dot"></span> 15 минут чтения</span>
+      <span class="chip"><span class="chip-dot"></span> Спикер: Историчка</span>
+      <span class="chip"><span class="chip-dot" style="background: var(--accent);"></span> Практика</span>
+    </div>
+
+    <p class="lead-text">Как не ждать идеального момента и, наконец, опубликовать первый пост. Что писать, как структурировать профиль и почему первые 20 публикаций — это не для охватов, а для вас.</p>
+  </header>
+
+  <!-- ——— 1. Главная мысль ——— -->
+  <section class="section">
+    <div class="section-eyebrow">01 · Главная мысль</div>
+    <h2 class="section-title">Готовность не придёт — начинайте сейчас</h2>
+
+    <p class="body-text">Всегда будет казаться, что сейчас не лучшее время: нет камеры, нет идеального текста, нет уверенности. Но никто из успешных блогеров не начинал идеально. Первые посты были кривыми, короткими, почти без просмотров.</p>
+
+    <div class="key-point">
+      <div class="key-point-label">Главное</div>
+      <p>Ключевое — не качество первых постов, а их <span class="highlight">наличие</span>. Именно оно стало отправной точкой у каждого блогера.</p>
+    </div>
+
+    <blockquote class="quote-block">
+      Ни один человек не написал своё лучшее сочинение в первом классе. И никто не установил рекорд по плаванию, впервые записавшись на занятие.
+      <span class="quote-author">— Историчка, спикер курса</span>
+    </blockquote>
+  </section>
+
+  <div class="divider">Закреп</div>
+
+  <!-- ——— 2. Закреплённый пост ——— -->
+  <section class="section" style="margin-top: 0;">
+    <div class="section-eyebrow">02 · Структура профиля</div>
+    <h2 class="section-title">Закреплённый пост-знакомство</h2>
+
+    <p class="body-text">Закрепленный пост — это первое, что видит случайный подписчик. Он устаревает, поэтому его нужно обновлять раз в несколько месяцев.</p>
+
+    <div class="card">
+      <div class="card-label">Структура поста-знакомства</div>
+      <ol class="steps">
+        <li>
+          <div>
+            <div class="step-title">Кто вы</div>
+            <div class="step-desc">Коротко о себе. Не резюме, а живой образ.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">О чём блог</div>
+            <div class="step-desc">Конкретно: что человек будет получать, если подпишется. Какие темы, какой формат.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Почему именно сейчас</div>
+            <div class="step-desc">Объясните точку старта. Это делает пост живым — люди любят начало истории. Например: «Записалась на курс по блогингу и решила делиться всеми заданиями здесь».</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Вопрос читателю</div>
+            <div class="step-desc">Один простой вопрос в конце — запускает первый комментарий. Например: «А вы когда последний раз делали что-то впервые?»</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="key-point">
+      <div class="key-point-label">Важно</div>
+      <p>Пост-знакомство — <span class="highlight-line">живой документ</span>. Меняется семейное положение, ниша, внешний вид, нагрузка. Обновляйте его регулярно.</p>
+    </div>
+  </section>
+
+  <div class="divider">Челлендж</div>
+
+  <!-- ——— 3. Первые 20 постов ——— -->
+  <section class="section" style="margin-top: 0;">
+    <div class="section-eyebrow">03 · Система</div>
+    <h2 class="section-title">Челлендж первых 20 постов</h2>
+
+    <p class="body-text">Многие начинают вести блог, пытаясь делать всё правильно: анализируют конкурентов, переписывают пост по 30 раз — и публикуют раз в месяц или не публикуют вообще.</p>
+
+    <div class="callout-dark">
+      <h3>Ловушка перфекционизма</h3>
+      <p>Она убивает блоги вернее любого алгоритма. Первые 20 постов — это учёба, не витрина.</p>
+      <p>Вы учитесь своему голосу, узнаёте, какие темы легко писать, познаёте потребности аудитории. Это черновик, который не жалко испортить.</p>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <div class="card-label">Правила первых 20 постов</div>
+      <ol class="steps">
+        <li>
+          <div>
+            <div class="step-title">Редактировать не дольше 15 минут</div>
+            <div class="step-desc">Написали — перечитали один раз — опубликовали. Всё, работа закончена.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Пробовать разные форматы</div>
+            <div class="step-desc">История из жизни → совет/лайфхак → вопрос к аудитории → короткое видео → личное наблюдение. Не думайте, что лучше. Просто пробуйте всё разное.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Не смотреть на цифры</div>
+            <div class="step-desc">Первые 20 постов — не для анализа. Они для практики и для того, чтобы перебороть страх. Анализ будет на 3-й неделе курса.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="key-point">
+      <div class="key-point-label">Почему 20</div>
+      <p>К 20-й публикации уходит страх, появляется ритм. И алгоритмы соцсетей начинают показывать вас новой аудитории — они смотрят на <span class="highlight">регулярность и объём</span>. Это входной билет на продвижение.</p>
+    </div>
+  </section>
+
+  <div class="divider">Темы</div>
+
+  <!-- ——— 4. Темы ——— -->
+  <section class="section" style="margin-top: 0;">
+    <div class="section-eyebrow">04 · Идеи для контента</div>
+    <h2 class="section-title">10 тем для первых постов</h2>
+
+    <p class="body-text">Берите и используйте прямо сейчас. Полный список из 20 тем — в материалах курса.</p>
+
+    <div class="topics-grid">
+      <div class="topic-item">
+        <span class="topic-num">01</span>
+        <div>
+          <div class="topic-text">Знакомство</div>
+          <div class="topic-sub">Кто вы, о чём блог, почему начали — это ваш закреп</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">02</span>
+        <div>
+          <div class="topic-text">Ваша история</div>
+          <div class="topic-sub">Как вы пришли к теме блога? Что привело сюда?</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">03</span>
+        <div>
+          <div class="topic-text">Самое частое заблуждение</div>
+          <div class="topic-sub">Все думают X, но на самом деле всё иначе</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">04</span>
+        <div>
+          <div class="topic-text">Один совет</div>
+          <div class="topic-sub">Маленький и конкретный совет, который что-то изменил</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">05</span>
+        <div>
+          <div class="topic-text">День из жизни</div>
+          <div class="topic-sub">Честно, с изъянами — что реально происходит</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">06</span>
+        <div>
+          <div class="topic-text">Вопрос к аудитории</div>
+          <div class="topic-sub">Что вам интересно знать о ваших читателях?</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">07</span>
+        <div>
+          <div class="topic-text">Провал или ошибка</div>
+          <div class="topic-sub">Один из самых вовлекающих форматов — люди доверяют честности</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">08</span>
+        <div>
+          <div class="topic-text">Рекомендация</div>
+          <div class="topic-sub">Книги, приложения, привычки, которые реально работают</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">09</span>
+        <div>
+          <div class="topic-text">Лайфхак</div>
+          <div class="topic-sub">Одна простая вещь, которую можно сделать прямо сейчас</div>
+        </div>
+      </div>
+      <div class="topic-item">
+        <span class="topic-num">10</span>
+        <div>
+          <div class="topic-text">Личное наблюдение</div>
+          <div class="topic-sub">Что заметили на этой неделе — связанное с темой блога</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">Рост</div>
+
+  <!-- ——— 5. Первые подписчики ——— -->
+  <section class="section" style="margin-top: 0;">
+    <div class="section-eyebrow">05 · Механика</div>
+    <h2 class="section-title">Как прийдут первые подписчики</h2>
+
+    <p class="body-text">Каждый популярный блогер когда-то опубликовал свой первый пост в пустоту. И кто-то случайный его прочитал. Так начинается каждый блог.</p>
+
+    <div class="card">
+      <div class="card-label">Три действия, которые работают сразу</div>
+      <ol class="steps">
+        <li>
+          <div>
+            <div class="step-title">Попросить поделиться</div>
+            <div class="step-desc">Функция «Поделиться» работает намного эффективнее, чем лайки. Перешлите пост поддерживающим друзьям.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Отвечать на каждый комментарий</div>
+            <div class="step-desc">Особенно на первые. Алгоритмы любят вовлечённость, а люди чувствуют, что вы живой автор.</div>
+          </div>
+        </li>
+        <li>
+          <div>
+            <div class="step-title">Оставлять настоящие комментарии</div>
+            <div class="step-desc">Зайдите к 5–10 авторам вашей ниши. Не «отлично» и не эмодзи — а полноценная реакция на конкретный контент. Это приводит живой трафик на вашу страницу.</div>
+          </div>
+        </li>
+      </ol>
+    </div>
+
+    <div class="key-point">
+      <div class="key-point-label">Пример</div>
+      <p>Историчка оставила комментарий блогеру: «Я тоже Настя, тоже школьный учитель, тоже начала вести блог» — комментарий залайкали, и подписчики пошли сами.</p>
+    </div>
+  </section>
+
+  <div class="divider">Итоги урока</div>
+
+  <!-- ——— Итоги ——— -->
+  <section class="section" style="margin-top: 0;">
+    <div class="section-eyebrow">06 · Выводы</div>
+    <h2 class="section-title">Три вещи из этого урока</h2>
+
+    <div class="outcomes">
+      <div class="outcome-item">
+        <div class="outcome-check"></div>
+        <div class="outcome-text">Закреплённый пост — живой документ. Обновлять раз в несколько месяцев.</div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-check"></div>
+        <div class="outcome-text">Первые 20 постов — практика, не перфекционизм. Быстро, разные форматы, без анализа цифр.</div>
+      </div>
+      <div class="outcome-item">
+        <div class="outcome-check"></div>
+        <div class="outcome-text">Темы уже есть. Список готов. Осталось только начать.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ——— Домашнее задание ——— -->
+  <div class="hw-block">
+    <div class="hw-eyebrow">Домашнее задание</div>
+    <h3>Два действия после урока</h3>
+    <div class="hw-items">
+      <div class="hw-item">
+        <span class="hw-star">01</span>
+        <div class="hw-text">Написать и опубликовать пост-знакомство по структуре из урока. Если он уже есть — обновить.</div>
+      </div>
+      <div class="hw-item">
+        <span class="hw-star">⭐</span>
+        <div class="hw-text">Опубликовать первый пост сегодня, даже если кажется, что вы ещё не готовы. Если пост опубликован — дело сделано. Вы уже обогнали всех, кто ждёт подходящего момента.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ——— Рабочий лист ——— -->
+  <div class="note-field" style="margin-top: 32px;">
+    <div class="note-field-label">Рабочий лист · Черновик поста-знакомства</div>
+    <div class="note-field-lines"></div>
+  </div>
+  <div class="note-field" style="margin-top: 12px;">
+    <div class="note-field-label">Мои первые 5 тем для публикаций</div>
+    <div class="note-field-lines"></div>
+  </div>
+
+  <!-- ——— Навигация ——— -->
+  <div class="nav-row">
+    <a href="#" class="btn btn-ghost">← Урок 1.5 · Профиль</a>
+    <a href="#" class="btn btn-primary">Урок 2.2 · Типы постов →</a>
+  </div>
+
+</div>
+
+</body>
+</html>
